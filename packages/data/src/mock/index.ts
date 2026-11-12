@@ -43,6 +43,8 @@ export interface MockOptions {
   behaviour?: Partial<MockBehaviour>;
   /** "Today" for the seed data. Defaults to now. */
   today?: Date;
+  /** Where inbox items link to, if a client mounts modules at other paths. */
+  links?: Partial<Record<"users" | "reports" | "notifications" | "themes", string>>;
 }
 
 export function createMockAdapters(options: MockOptions = {}): Adapters {
@@ -287,11 +289,14 @@ export function createMockAdapters(options: MockOptions = {}): Adapters {
 
   /* -------------------------------- inbox -------------------------------- */
 
+  const links = { users: "/users", reports: "/reports", notifications: "/notifications", themes: "/themes", ...options.links };
+  const liveTheme = themes.find((t) => t.status === "live");
+  const lastMonthName = new Intl.DateTimeFormat("en-GB", { month: "long", timeZone: "UTC" }).format(addMonths(today, -1));
   const inbox: InboxItem[] = [
-    { id: "inb_1", title: `${themes[0]?.name ?? "Seasonal theme"} is live`, body: "Published to iOS, Android and Web.", href: "/themes", createdAt: addDays(today, -1).toISOString(), read: false, tone: "success" },
-    { id: "inb_2", title: "Push notification failed", body: "“Live tonight at 8pm” didn't send to Android.", href: "/notifications", createdAt: addDays(today, -2).toISOString(), read: false, tone: "danger" },
-    { id: "inb_3", title: "3 new admin invites accepted", href: "/users", createdAt: addDays(today, -4).toISOString(), read: true },
-    { id: "inb_4", title: "October revenue report is ready", href: "/reports", createdAt: addDays(today, -11).toISOString(), read: true, tone: "info" },
+    ...(liveTheme ? [{ id: "inb_1", title: `${liveTheme.name} is live`, body: "Published to iOS, Android and Web.", href: links.themes, createdAt: addDays(today, -1).toISOString(), read: false, tone: "success" as const }] : []),
+    { id: "inb_2", title: "Push notification failed", body: "“Live tonight at 8pm” didn't send to Android.", href: links.notifications, createdAt: addDays(today, -2).toISOString(), read: false, tone: "danger" },
+    { id: "inb_3", title: "3 new admin invites accepted", href: links.users, createdAt: addDays(today, -4).toISOString(), read: true },
+    { id: "inb_4", title: `${lastMonthName} revenue report is ready`, href: links.reports, createdAt: addDays(today, -11).toISOString(), read: true, tone: "info" },
   ];
 
   let roles = options.roles ? structuredClone(options.roles) : [];

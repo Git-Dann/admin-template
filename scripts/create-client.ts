@@ -86,8 +86,10 @@ theme.id = id;
 if (!keepTheme) theme.name = title;
 if (darkFirst) theme.modes = { default: "dark", supported: theme.modes?.supported?.includes("dark") ? theme.modes.supported : ["dark"] };
 
-let brandColour = keepTheme ? String(Object.values(theme.tokens.color.accent?.light ? { a: theme.tokens.color.accent.light } : { a: theme.tokens.color.accent }).at(0)) : "#2F5BEA";
-if (!parse(brandColour)) brandColour = "#2F5BEA";
+// Placeholder logo colour: the theme's accent if it's a literal colour, else Gitwork blue.
+const accentToken = theme.tokens?.color?.accent;
+const rawAccent: string | undefined = typeof accentToken === "string" ? accentToken : (accentToken?.light ?? accentToken?.dark);
+let brandColour = rawAccent && parse(rawAccent) ? formatHex(parse(rawAccent)!) : "#2F5BEA";
 if (accent) {
   const base = oklch(parse(accent)!)!;
   const hex = (l: number, chroma = base.c) => formatHex({ mode: "oklch", l: Math.min(0.98, Math.max(0.05, l)), c: chroma, h: base.h ?? 0 });
