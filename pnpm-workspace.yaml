@@ -3,6 +3,7 @@ packages:
   - "packages/*"
 allowBuilds:
   esbuild: true
+  workerd: true
 minimumReleaseAgeExclude:
   - "@turbo/darwin-64@2.11.11"
   - "@turbo/darwin-arm64@2.11.11"
@@ -12,3 +13,7 @@ minimumReleaseAgeExclude:
   - "@turbo/windows-arm64@2.11.11"
   - prettier@3.10.1
   - turbo@2.11.11
+  - "@hookform/resolvers@7.0.6"
+  - "@testing-library/user-event@14.6.10"
+  - miniflare@5.20261110.1-beta
+  - wrangler@4.160.1

@@ -1,0 +1,37 @@
+{
+  "name": "@gitwork/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Gitwork design tokens: one JSON file per client theme, built to CSS variables and a Tailwind v4 theme.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tailwind.css": "./dist/tailwind.css",
+    "./themes.css": "./dist/themes.css",
+    "./css/*": "./dist/css/*",
+    "./themes/*": "./themes/*",
+    "./themes.json": "./dist/themes.json"
+  },
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "check": "tsx scripts/check.ts",
+    "import-figma": "tsx scripts/import-figma.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "culori": "4.0.2",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@gitwork/config": "workspace:*",
+    "@types/culori": "4.0.1",
+    "@types/node": "26.6.6",
+    "style-dictionary": "5.8.0",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0",
+    "eslint": "9.39.5"
+  }
+}

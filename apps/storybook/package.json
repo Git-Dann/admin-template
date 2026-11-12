@@ -1,0 +1,33 @@
+{
+  "name": "storybook",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Storybook for every component, the shell and module pages, in every client theme.",
+  "scripts": {
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build": "storybook build -o storybook-static --quiet",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@gitwork/admin-shell": "workspace:*",
+    "@gitwork/config": "workspace:*",
+    "@gitwork/data": "workspace:*",
+    "@gitwork/modules": "workspace:*",
+    "@gitwork/tokens": "workspace:*",
+    "@gitwork/ui": "workspace:*",
+    "@storybook/addon-a11y": "10.6.7",
+    "@storybook/addon-docs": "10.6.7",
+    "@storybook/nextjs-vite": "10.6.7",
+    "@tailwindcss/vite": "4.3.5",
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "storybook": "10.6.7",
+    "tailwindcss": "4.3.5",
+    "typescript": "6.0.3",
+    "vite": "8.3.8"
+  }
+}
