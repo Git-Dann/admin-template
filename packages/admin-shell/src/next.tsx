@@ -49,3 +49,18 @@ export function AdminRootLayout({ brand, children }: { brand: Brand; children: R
     </html>
   );
 }
+
+/**
+ * Every static module path, for generateStaticParams in app/(admin)/[[...slug]]/page.tsx.
+ * Used by static exports (STATIC_EXPORT=1); routes with :params fall back to client routing.
+ */
+export function staticModuleParams(config: Pick<AdminConfig, "modules">): Array<{ slug: string[] }> {
+  const paths = new Set<string>();
+  for (const m of config.modules) {
+    for (const r of m.routes) {
+      if (r.path.includes(":")) continue;
+      paths.add([m.basePath, r.path].join("/").replace(/\/+/g, "/").replace(/^\/|\/$/g, ""));
+    }
+  }
+  return [...paths].map((p) => ({ slug: p ? p.split("/") : [] }));
+}

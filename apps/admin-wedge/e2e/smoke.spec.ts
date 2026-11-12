@@ -23,5 +23,10 @@ test("signs in and every page renders without errors", async ({ page }) => {
     await expect(page.locator("main h1, header h1").first()).not.toBeEmpty();
     await expect(page.getByText("We couldn't find that page")).toHaveCount(0);
   }
+  // Modules mounted under client names use those names as page titles.
+  await page.goto("/groups");
+  await expect(page.locator("header h1")).toHaveText("Groups");
+  await page.goto("/members");
+  await expect(page.locator("header h1")).toHaveText("Members");
   expect(errors).toEqual([]);
 });

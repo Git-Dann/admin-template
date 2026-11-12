@@ -3,7 +3,7 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { PLATFORM_LABELS, type UserRecord, type UserStatus } from "@gitwork/data";
-import { PageHeader, useAdapter, useAdminConfig, useCan } from "@gitwork/admin-shell";
+import { PageHeader, useAdapter, useAdminConfig, useCan, useModuleTitle } from "@gitwork/admin-shell";
 import {
   Avatar,
   Button,
@@ -154,7 +154,7 @@ export function UsersPage() {
 
   return (
     <>
-      <PageHeader title="Users" subtitle={facets.data ? `${total.toLocaleString("en-GB")} people` : undefined}>
+      <PageHeader title={useModuleTitle("Users")} subtitle={facets.data ? `${total.toLocaleString("en-GB")} people` : undefined}>
         <FilterChips
           label="Status"
           value={status}

@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { PLATFORM_LABELS, PLATFORMS, type MonthRevenue, type RevenueReport } from "@gitwork/data";
-import { PageHeader, useAdapter, useCan } from "@gitwork/admin-shell";
+import { PageHeader, useAdapter, useCan, useModuleTitle } from "@gitwork/admin-shell";
 import {
   BarChart,
   Button,
@@ -50,6 +50,7 @@ export function reportToCsv(report: RevenueReport): string {
 
 export function ReportsPage() {
   const reports = useAdapter("reports");
+  const title = useModuleTitle("Reports");
   const canExport = useCan("reports.export");
   const [range, setRange] = useState("12");
   const [view, setView] = useState<"total" | "platform">("total");
@@ -66,7 +67,7 @@ export function ReportsPage() {
   if (q.isError) {
     return (
       <>
-        <PageHeader title="Reports" />
+        <PageHeader title={title} />
         <ErrorState error={q.error} onRetry={() => void q.refetch()} />
       </>
     );
@@ -75,7 +76,7 @@ export function ReportsPage() {
   return (
     <>
       <PageHeader
-        title="Reports"
+        title={title}
         subtitle="Revenue across every platform"
         actions={
           canExport && (

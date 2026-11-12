@@ -20,7 +20,9 @@
     "create-client": "tsx scripts/create-client.ts",
     "format": "prettier --write .",
     "changeset": "changeset",
-    "version-packages": "changeset version"
+    "version-packages": "changeset version",
+    "preview:build": "STATIC_EXPORT=1 turbo run build --filter='./apps/*' --force",
+    "preview:deploy": "pnpm preview:build && for d in apps/admin-* apps/storybook; do (cd $d && wrangler deploy); done"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",
@@ -31,6 +33,7 @@
     "@types/culori": "4.0.1",
     "@types/node": "26.6.6",
     "turbo": "2.11.11",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "wrangler": "4.160.1"
   }
 }

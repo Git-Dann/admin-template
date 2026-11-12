@@ -25,6 +25,7 @@ Sign in with any of the role buttons on the login screen (mock auth). Use the ac
 - [Theme builder and asset packs](#theme-builder-and-asset-packs)
 - [Design rules](#design-rules)
 - [Testing and CI](#testing-and-ci)
+- [Preview on Cloudflare](#preview-on-cloudflare)
 - [Decisions and known limits](#decisions-and-known-limits)
 
 ## Repo map
@@ -323,6 +324,17 @@ pnpm build && pnpm e2e # Playwright smoke test per app (signs in, visits every m
 If Playwright's own browser isn't installed, point it at another Chromium with `PLAYWRIGHT_CHROMIUM=/path/to/chrome`.
 
 CI (`.github/workflows/ci.yml`) runs all of the above. Version packages with Changesets: `pnpm changeset`.
+
+## Preview on Cloudflare
+
+Each app can be exported as plain files (`STATIC_EXPORT=1`) and served by Cloudflare Workers static assets, so clients can review the admin on mock data without a server.
+
+```bash
+npx wrangler login     # or set CLOUDFLARE_API_TOKEN
+pnpm preview:deploy    # builds static exports + Storybook, deploys each with wrangler
+```
+
+Each app's `wrangler.jsonc` names the Worker (`gitwork-admin-<client>`) and uses single-page-app fallback, so deep links like `/themes/thm_0002` work. Mock data lives in the browser, so changes reset on a full reload. For a real API, deploy the normal Next.js build instead (for example with OpenNext on Workers).
 
 ## Decisions and known limits
 

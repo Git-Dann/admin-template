@@ -4,7 +4,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tansta
 import { useState } from "react";
 import { z } from "zod";
 import type { Coupon, CouponStatus, StaffCode } from "@gitwork/data";
-import { PageHeader, useAdapter, useCan } from "@gitwork/admin-shell";
+import { PageHeader, useAdapter, useCan, useModuleTitle } from "@gitwork/admin-shell";
 import {
   Button,
   CodeChip,
@@ -238,7 +238,7 @@ function StaffCodes() {
 export function CouponsPage() {
   return (
     <>
-      <PageHeader title="Coupons" subtitle="Promo codes and staff access" />
+      <PageHeader title={useModuleTitle("Coupons")} subtitle="Promo codes and staff access" />
       <Tabs defaultValue="promo">
         <TabsList className="mb-6">
           <TabsTrigger value="promo">Promo codes</TabsTrigger>

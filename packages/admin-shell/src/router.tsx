@@ -1,12 +1,25 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { createContext, useContext } from "react";
 import { EmptyState, Button } from "@gitwork/ui";
 import Link from "next/link";
 import { can } from "./rbac";
-import { matchRoute } from "./module";
+import { matchRoute, type AdminModule } from "./module";
 import { useAdminConfig, useSession } from "./context";
 import { PageHeader } from "./page-header";
+
+const ModuleContext = createContext<AdminModule | null>(null);
+
+/** The module whose route is rendering. Pages use it for their title, so `users({ title: "Members" })` works. */
+export function useCurrentModule(): AdminModule | null {
+  return useContext(ModuleContext);
+}
+
+/** The current module's title, or a fallback outside the router (e.g. in a story). */
+export function useModuleTitle(fallback: string): string {
+  return useContext(ModuleContext)?.title ?? fallback;
+}
 
 /** Renders the module route for the current URL. Mount it in app/(admin)/[[...slug]]/page.tsx. */
 export function ModuleRouter() {
@@ -35,5 +48,9 @@ export function ModuleRouter() {
   }
 
   const Page = match.route.component;
-  return <Page params={match.params} />;
+  return (
+    <ModuleContext.Provider value={match.module}>
+      <Page params={match.params} />
+    </ModuleContext.Provider>
+  );
 }

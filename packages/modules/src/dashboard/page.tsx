@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { Format, Metric } from "@gitwork/data";
-import { PageHeader, useAdapter } from "@gitwork/admin-shell";
+import { PageHeader, useAdapter, useModuleTitle } from "@gitwork/admin-shell";
 import { BarChart, ChartCard, ErrorState, formatCurrency, formatNumber, formatPercent, KpiStrip, ShareBars, StatCard } from "@gitwork/ui";
 import { lastMonths, monthLabel } from "../shared";
 
@@ -11,13 +11,14 @@ const fmt = (value: number, format: Format) =>
 
 export function DashboardPage() {
   const adapter = useAdapter("dashboard");
+  const title = useModuleTitle("Dashboard");
   const q = useQuery({ queryKey: ["dashboard"], queryFn: () => adapter.getSummary(lastMonths(12)) });
   const d = q.data;
 
   if (q.isError) {
     return (
       <>
-        <PageHeader title="Dashboard" />
+        <PageHeader title={title} />
         <ErrorState error={q.error} onRetry={() => void q.refetch()} />
       </>
     );
@@ -30,7 +31,7 @@ export function DashboardPage() {
 
   return (
     <>
-      <PageHeader title="Dashboard" subtitle="How things are going this month" />
+      <PageHeader title={title} subtitle="How things are going this month" />
       <div className="grid gap-4 lg:grid-cols-3">
         <StatCard
           emphasis

@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { RoleDefinition } from "@gitwork/data";
-import { PageHeader, scopeOf, setScope, useAdapter, useAdminConfig, useCan, type PermissionDefinition, type ScopeLevel } from "@gitwork/admin-shell";
+import { PageHeader, scopeOf, setScope, useAdapter, useAdminConfig, useCan, type PermissionDefinition, type ScopeLevel, useModuleTitle } from "@gitwork/admin-shell";
 import { Button, Callout, Card, cn, DataState, RoleBadge, Skeleton, toast } from "@gitwork/ui";
 
 const LEVELS: Array<{ value: ScopeLevel; label: string }> = [
@@ -61,7 +61,7 @@ export function RolesPage() {
   return (
     <>
       <PageHeader
-        title="Roles & permissions"
+        title={useModuleTitle("Roles & permissions")}
         subtitle="Who can see and change what"
         actions={
           canManage && (

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PLATFORM_LABELS, type ThemeStatus } from "@gitwork/data";
-import { Can, moduleHref, PageHeader, useAdapter } from "@gitwork/admin-shell";
+import { Can, moduleHref, PageHeader, useAdapter, useModuleTitle } from "@gitwork/admin-shell";
 import { Button, DataState, EmptyState, FilterChips, formatDate, MediaCard, Skeleton } from "@gitwork/ui";
 
 export function ThemeList({ basePath }: { basePath: string }) {
@@ -20,7 +20,7 @@ export function ThemeList({ basePath }: { basePath: string }) {
 
   return (
     <>
-      <PageHeader title="Theme builder" subtitle="Seasonal looks for the app and web" actions={<Can permission="themes.manage">{newTheme}</Can>}>
+      <PageHeader title={useModuleTitle("Theme builder")} subtitle="Seasonal looks for the app and web" actions={<Can permission="themes.manage">{newTheme}</Can>}>
         <FilterChips
           label="Status"
           value={status}

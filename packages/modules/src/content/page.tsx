@@ -3,7 +3,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import type { Collection, ContentItem } from "@gitwork/data";
-import { PageHeader, moduleHref, useAdapter, useCan, useScope, useSession, type ModuleRouteProps } from "@gitwork/admin-shell";
+import { PageHeader, moduleHref, useAdapter, useCan, useScope, useSession, type ModuleRouteProps, useModuleTitle } from "@gitwork/admin-shell";
 import {
   AreaChart,
   BarChart,
@@ -32,6 +32,7 @@ import { monthLabel, useListParams } from "../shared";
 
 export function ContentList({ basePath }: { basePath: string }) {
   const content = useAdapter("content");
+  const title = useModuleTitle("Content");
   const router = useRouter();
   const { user } = useSession();
   const scope = useScope("content.manage");
@@ -42,7 +43,7 @@ export function ContentList({ basePath }: { basePath: string }) {
 
   return (
     <>
-      <PageHeader title="Content" subtitle={q.data ? `${formatNumber(q.data.total)} ${kind.toLowerCase()}s` : undefined}>
+      <PageHeader title={title} subtitle={q.data ? `${formatNumber(q.data.total)} ${kind.toLowerCase()}s` : undefined}>
         <SearchInput value={params.search ?? ""} onChange={setSearch} placeholder={`Search ${kind.toLowerCase()}s…`} />
         <FilterChips
           label="Status"
@@ -93,17 +94,18 @@ const itemColumns = itemCol.columns([
 
 export function ContentDetail({ params, basePath }: ModuleRouteProps & { basePath: string }) {
   const content = useAdapter("content");
+  const title = useModuleTitle("Content");
   const q = useQuery({ queryKey: ["content", "detail", params.id], queryFn: () => content.getCollection(params.id!) });
   const c = q.data;
   const canEdit = useCan("content.manage", { ownerId: c?.ownerId ?? "__none" });
   const top = useMemo(() => [...(c?.items ?? [])].sort((a, b) => b.plays - a.plays).slice(0, 8).map((i) => ({ label: i.title.replace(/^(Episode|Round) /, "#"), plays: i.plays })), [c]);
   const months = useMemo(() => (c?.playsByMonth ?? []).map((m) => ({ label: monthLabel(m.month), plays: m.plays })), [c]);
-  const back = { href: basePath, label: "All content" };
+  const back = { href: basePath, label: `All ${title.toLowerCase()}` };
 
   if (q.isError) {
     return (
       <>
-        <PageHeader title="Content" back={back} />
+        <PageHeader title={title} back={back} />
         <ErrorState error={q.error} onRetry={() => void q.refetch()} />
       </>
     );

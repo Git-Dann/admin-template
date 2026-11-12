@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { Controller, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { PLATFORM_LABELS, type PushNotification } from "@gitwork/data";
-import { Can, moduleHref, PageHeader, useAdapter, useAdminConfig, useSession } from "@gitwork/admin-shell";
+import { Can, moduleHref, PageHeader, useAdapter, useAdminConfig, useSession, useModuleTitle } from "@gitwork/admin-shell";
 import {
   Button,
   Callout,
@@ -59,7 +59,7 @@ export function History({ basePath }: { basePath: string }) {
   return (
     <>
       <PageHeader
-        title="Notifications"
+        title={useModuleTitle("Notifications")}
         subtitle="Push notifications to app users"
         actions={<Can permission="notifications.send"><Button icon="plus" onClick={() => router.push(moduleHref({ basePath }, "new"))}>New notification</Button></Can>}
       >

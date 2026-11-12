@@ -7,7 +7,7 @@ import { designRules } from "./design-rules.js";
 
 /** Base config for every package and app. */
 export default tseslint.config(
-  { ignores: ["**/dist/**", "**/.next/**", "**/storybook-static/**", "**/node_modules/**"] },
+  { ignores: ["**/dist/**", "**/.next/**", "**/out/**", "**/.wrangler/**", "**/storybook-static/**", "**/node_modules/**", "**/next-env.d.ts"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
