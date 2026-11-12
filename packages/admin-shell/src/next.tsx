@@ -10,7 +10,7 @@ import type { ReactNode } from "react";
 import { fontStylesheets, localFontFaces, type ResolvedTheme } from "@gitwork/tokens";
 import themes from "@gitwork/tokens/themes.json";
 import type { AdminConfig } from "./config";
-import { modeScript } from "./theme-mode";
+import { modeScript } from "./mode-script";
 
 type Brand = AdminConfig["brand"];
 

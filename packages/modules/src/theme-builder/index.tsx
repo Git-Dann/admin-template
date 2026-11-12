@@ -1,5 +1,3 @@
-"use client";
-
 import type { AdminModule } from "@gitwork/admin-shell";
 import { ThemeEditor } from "./editor";
 import { ThemeList } from "./list";

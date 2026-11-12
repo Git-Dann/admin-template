@@ -66,8 +66,8 @@ export function FileChip({
       {status.state === "valid" && (status.warning ? <Icon name="warning" size="sm" className="text-warning" label="Check this" /> : <Icon name="success" size="sm" className="text-success" label="Valid" />)}
       {status.state === "invalid" && <Icon name="error" size="sm" className="text-danger" label="Invalid" />}
       <div className="flex shrink-0 items-center gap-1">
-        {onReplace && <Button variant="ghost" size="sm" onClick={onReplace}>Replace</Button>}
-        {onRemove && <Button variant="ghost" size="icon-sm" icon="trash" aria-label={`Remove ${file.name}`} onClick={onRemove} />}
+        {onReplace && <Button variant="ghost" size="icon-sm" icon="upload" aria-label={`Replace ${file.name}`} title="Replace" onClick={onReplace} />}
+        {onRemove && <Button variant="ghost" size="icon-sm" icon="trash" aria-label={`Remove ${file.name}`} title="Remove" onClick={onRemove} />}
       </div>
     </div>
   );
