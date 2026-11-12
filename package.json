@@ -1,0 +1,33 @@
+{
+  "name": "gitwork-admin",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "e2e": "turbo run e2e",
+    "storybook": "turbo run storybook --filter=@gitwork/ui",
+    "tokens:build": "pnpm --filter @gitwork/tokens build",
+    "tokens:check": "pnpm --filter @gitwork/tokens check",
+    "tokens:import": "pnpm --filter @gitwork/tokens import-figma",
+    "create-client": "tsx scripts/create-client.ts",
+    "format": "prettier --write .",
+    "changeset": "changeset",
+    "version-packages": "changeset version"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "eslint": "9.39.5",
+    "prettier": "3.10.1",
+    "tsx": "4.23.15",
+    "turbo": "2.11.11",
+    "typescript": "6.0.3"
+  }
+}
