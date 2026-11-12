@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Token-driven admin components (shadcn/Radix base). Every colour, radius and size comes from @gitwork/tokens.",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./styles.css": "./src/styles.css",
@@ -41,9 +43,13 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@gitwork/admin-shell": "workspace:*",
     "@gitwork/config": "workspace:*",
+    "@gitwork/data": "workspace:*",
+    "@gitwork/modules": "workspace:*",
     "@storybook/addon-a11y": "10.6.7",
     "@storybook/addon-docs": "10.6.7",
+    "@storybook/nextjs-vite": "10.6.7",
     "@storybook/react-vite": "10.6.7",
     "@tailwindcss/vite": "4.3.5",
     "@testing-library/dom": "10.4.2",
@@ -56,6 +62,7 @@
     "@vitejs/plugin-react": "6.3.0",
     "eslint": "9.39.5",
     "jsdom": "31.0.0",
+    "next": "16.4.6",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "storybook": "10.6.7",

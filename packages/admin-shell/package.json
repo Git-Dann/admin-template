@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./next": "./src/next.tsx",
-    "./rbac": "./src/rbac.ts"
+    "./rbac": "./src/rbac.ts",
+    "./story-config": "./src/story-config.tsx"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@gitwork/config": "workspace:*",
+    "@storybook/nextjs-vite": "10.6.7",
     "@storybook/react-vite": "10.6.7",
     "@testing-library/jest-dom": "7.0.1",
     "@testing-library/react": "16.3.3",

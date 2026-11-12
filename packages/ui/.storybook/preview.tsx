@@ -1,4 +1,4 @@
-import type { Decorator, Preview } from "@storybook/react-vite";
+import type { Decorator, Preview } from "@storybook/nextjs-vite";
 import { fontStylesheets, type ResolvedTheme } from "@gitwork/tokens";
 import themes from "@gitwork/tokens/themes.json";
 import { IconProvider } from "../src/icons";
@@ -66,6 +66,7 @@ const preview: Preview = {
   },
   initialGlobals: { theme: "compare", icons: "lucide" },
   parameters: {
+    nextjs: { appDirectory: true },
     layout: "fullscreen",
     controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },
     a11y: { test: "error" },
