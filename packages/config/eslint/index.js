@@ -17,8 +17,10 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.flatConfigs.recommended.rules,
+      "jsx-a11y/aria-role": ["error", { ignoreNonDOM: true }],
       "gitwork/no-raw-colours": "error",
       "gitwork/no-crescent-border": "error",
+      "gitwork/no-theme-vars": "error",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "@typescript-eslint/consistent-type-imports": "error",
     },

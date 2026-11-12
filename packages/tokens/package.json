@@ -9,7 +9,8 @@
     "./tailwind.css": "./dist/tailwind.css",
     "./themes.css": "./dist/themes.css",
     "./css/*": "./dist/css/*",
-    "./themes/*": "./themes/*"
+    "./themes/*": "./themes/*",
+    "./themes.json": "./dist/themes.json"
   },
   "scripts": {
     "build": "tsx scripts/build.ts",

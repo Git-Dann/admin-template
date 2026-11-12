@@ -1,0 +1,64 @@
+/*
+ * @gitwork/ui stylesheet. Apps import this once:
+ *   @import "@gitwork/ui/styles.css";
+ * It brings Tailwind, the token theme (default palette removed) and every client theme.
+ */
+@import "tailwindcss";
+@import "@gitwork/tokens/tailwind.css";
+@import "@gitwork/tokens/themes.css";
+
+/* Scan shared packages for classes. */
+@source "./";
+@source "../../admin-shell/src";
+@source "../../modules/src";
+
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
+@layer base {
+  html {
+    background: var(--gw-color-bg);
+    color: var(--gw-color-text);
+    font-family: var(--gw-font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    min-height: 100dvh;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--gw-font-display);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--gw-color-focus-ring);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--gw-color-accent-subtle);
+    color: var(--gw-color-text);
+  }
+  * {
+    border-color: var(--gw-color-border);
+  }
+}
+
+/* Numbers line up in tables and stat cards. */
+@utility numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Shared focus ring for custom controls (Radix triggers, cards acting as buttons). */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--gw-color-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
