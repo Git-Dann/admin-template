@@ -1,0 +1,14 @@
+{
+  "Primitives": {
+    "Green": {
+      "500": { "$type": "color", "$value": { "colorSpace": "srgb", "components": [0.0039, 0.3843, 0.2471], "alpha": 1, "hex": "#01623F" } }
+    }
+  },
+  "Semantic": {
+    "Colour": {
+      "Accent": { "$type": "color", "$value": "{Primitives.Green.500}" },
+      "Surface Raised": { "$type": "color", "$value": { "colorSpace": "srgb", "components": [0.94, 0.96, 0.94], "alpha": 1, "hex": "#F0F5F0" } }
+    }
+  },
+  "$extensions": { "com.figma.modeName": "Light" }
+}

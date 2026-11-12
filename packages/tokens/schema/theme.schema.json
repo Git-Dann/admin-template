@@ -1,0 +1,757 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extends": {
+      "description": "Inherit everything from another theme id, then override",
+      "type": "string"
+    },
+    "modes": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ]
+        },
+        "supported": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "light",
+              "dark"
+            ]
+          }
+        }
+      },
+      "required": [
+        "default",
+        "supported"
+      ],
+      "additionalProperties": false
+    },
+    "brand": {
+      "type": "object",
+      "properties": {
+        "logo": {
+          "type": "object",
+          "properties": {
+            "full": {
+              "type": "string"
+            },
+            "mark": {
+              "type": "string"
+            },
+            "onDark": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "full"
+          ],
+          "additionalProperties": false
+        },
+        "favicon": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "fonts": {
+      "type": "object",
+      "properties": {
+        "display": {
+          "type": "object",
+          "properties": {
+            "family": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Font family name, e.g. Barlow"
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "google",
+                "fontshare",
+                "local",
+                "system"
+              ],
+              "description": "google / fontshare load a stylesheet; local expects files under the app's public/fonts; system loads nothing"
+            },
+            "weights": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 900
+              }
+            },
+            "fallback": {
+              "description": "CSS fallback stack appended after the family",
+              "type": "string"
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "src": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "type": "number"
+                  },
+                  "style": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "src",
+                  "weight"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "family",
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "family": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Font family name, e.g. Barlow"
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "google",
+                "fontshare",
+                "local",
+                "system"
+              ],
+              "description": "google / fontshare load a stylesheet; local expects files under the app's public/fonts; system loads nothing"
+            },
+            "weights": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 900
+              }
+            },
+            "fallback": {
+              "description": "CSS fallback stack appended after the family",
+              "type": "string"
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "src": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "type": "number"
+                  },
+                  "style": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "src",
+                  "weight"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "family",
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        "mono": {
+          "type": "object",
+          "properties": {
+            "family": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Font family name, e.g. Barlow"
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "google",
+                "fontshare",
+                "local",
+                "system"
+              ],
+              "description": "google / fontshare load a stylesheet; local expects files under the app's public/fonts; system loads nothing"
+            },
+            "weights": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 900
+              }
+            },
+            "fallback": {
+              "description": "CSS fallback stack appended after the family",
+              "type": "string"
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "src": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "type": "number"
+                  },
+                  "style": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "src",
+                  "weight"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "family",
+            "source"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "tokens": {
+      "type": "object",
+      "properties": {
+        "palette": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "light": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "dark": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "$value": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "light": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "dark": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "$type": {
+                        "type": "string"
+                      },
+                      "$description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "$value"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "light": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "dark": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$value": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "light": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "dark": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          ]
+                        },
+                        "$type": {
+                          "type": "string"
+                        },
+                        "$description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "$value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "color": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "light": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "dark": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$value": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "light": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "dark": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "$type": {
+                    "type": "string"
+                  },
+                  "$description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "$value"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "radius": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "light": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "dark": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$value": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "light": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "dark": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "$type": {
+                    "type": "string"
+                  },
+                  "$description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "$value"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "space": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "light": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "dark": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$value": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "light": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "dark": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "$type": {
+                    "type": "string"
+                  },
+                  "$description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "$value"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "size": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "light": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "dark": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$value": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "light": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "dark": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "$type": {
+                    "type": "string"
+                  },
+                  "$description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "$value"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "shadow": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "light": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "dark": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$value": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "light": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "dark": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "$type": {
+                    "type": "string"
+                  },
+                  "$description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "$value"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "name"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "../schema/theme.schema.json",
+  "id": "wedge",
+  "name": "Wedge",
+  "modes": { "default": "light", "supported": ["light", "dark"] },
+  "brand": {
+    "logo": { "full": "/brand/logo.svg", "mark": "/brand/mark.svg" },
+    "favicon": "/brand/mark.svg"
+  },
+  "fonts": {
+    "display": { "family": "Clash Display", "source": "fontshare", "weights": [500, 600, 700] },
+    "body": {
+      "family": "SF Pro",
+      "source": "system",
+      "fallback": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", system-ui, \"Segoe UI\", Roboto, sans-serif"
+    }
+  },
+  "tokens": {
+    "palette": {
+      "green": { "50": "#E3F1EA", "500": "#01623F", "600": "#014A30", "300": "#3DB585" }
+    },
+    "color": {
+      "bg": { "light": "#F5F7F4", "dark": "#0B1410" },
+      "bg-elevated": { "light": "#FFFFFF", "dark": "#0F1A15" },
+      "surface": { "light": "#FFFFFF", "dark": "#111C17" },
+      "surface-raised": { "light": "#F0F4EF", "dark": "#17241E" },
+      "border": { "light": "#E1E7E0", "dark": "#22322A" },
+      "border-strong": { "light": "#7F8C83", "dark": "#62756A" },
+      "text": { "light": "#0F1A14", "dark": "#EEF3EF" },
+      "text-muted": { "light": "#52605A", "dark": "#9BAAA1" },
+      "text-on-accent": { "light": "#FFFFFF", "dark": "#04120C" },
+      "accent": { "light": "{palette.green.500}", "dark": "{palette.green.300}" },
+      "accent-pressed": { "light": "{palette.green.600}", "dark": "#2FA272" },
+      "accent-subtle": { "light": "{palette.green.50}", "dark": "#10291D" },
+      "accent-text": { "light": "{palette.green.500}", "dark": "#5CCB9C" },
+      "secondary": { "light": "#8A6A00", "dark": "#E3C35A" },
+      "success": { "light": "#16703F", "dark": "#4CC38A" },
+      "success-subtle": { "light": "#E2F2E8", "dark": "#12291E" },
+      "warning": { "light": "#8F5200", "dark": "#F0B13D" },
+      "warning-subtle": { "light": "#FBF0DC", "dark": "#2E2410" },
+      "danger": { "light": "#B42318", "dark": "#F47C70" },
+      "danger-subtle": { "light": "#FBE7E5", "dark": "#331715" },
+      "info": { "light": "#175CD3", "dark": "#6BB1F2" },
+      "info-subtle": { "light": "#E6EFFC", "dark": "#10243A" },
+      "focus-ring": { "light": "{palette.green.500}", "dark": "#5CCB9C" },
+      "overlay": { "light": "rgb(15 26 20 / 0.45)", "dark": "rgb(0 0 0 / 0.6)" },
+      "chart-1": { "light": "{palette.green.500}", "dark": "{palette.green.300}" },
+      "chart-2": { "light": "#2E8B63", "dark": "#8FD9B6" },
+      "chart-3": { "light": "#A87700", "dark": "#E3C35A" },
+      "chart-4": { "light": "#2F6FB5", "dark": "#6BB1F2" },
+      "chart-5": { "light": "#C04F36", "dark": "#F28C6E" },
+      "chart-6": { "light": "#66736C", "dark": "#9BAAA1" }
+    },
+    "radius": { "sm": "8px", "md": "12px", "lg": "16px", "xl": "24px", "pill": "999px" },
+    "space": { "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "20px", "6": "24px", "8": "32px", "10": "40px", "12": "48px" },
+    "size": { "control": "44px", "control-sm": "32px", "sidebar": "264px", "sidebar-collapsed": "72px", "topbar": "72px" },
+    "shadow": {
+      "sm": { "light": "0 1px 2px rgb(15 26 20 / 0.05)", "dark": "0 1px 2px rgb(0 0 0 / 0.4)" },
+      "md": { "light": "0 6px 16px -4px rgb(15 26 20 / 0.08)", "dark": "0 6px 16px -4px rgb(0 0 0 / 0.5)" },
+      "lg": { "light": "0 20px 40px -12px rgb(15 26 20 / 0.18)", "dark": "0 20px 40px -12px rgb(0 0 0 / 0.6)" }
+    }
+  }
+}
