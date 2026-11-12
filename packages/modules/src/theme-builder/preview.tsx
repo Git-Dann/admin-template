@@ -10,7 +10,7 @@ import { overrideStyle } from "./logic";
  * Live preview: the client theme with this season's colours, background, icon and splash,
  * rendered with real components under data-theme so it matches the app.
  */
-export function ThemePreview({ theme, clientTheme, modes, productName, logo }: { theme: SeasonalTheme; clientTheme: string; modes: Mode[]; productName: string; logo?: { full: string; mark?: string } }) {
+export function ThemePreview({ theme, clientTheme, modes, productName, logo }: { theme: SeasonalTheme; clientTheme: string; modes: Mode[]; productName: string; logo?: { full?: string; mark?: string } }) {
   const [device, setDevice] = useState<"phone" | "web" | "splash">("phone");
   const [mode, setMode] = useState<Mode>(modes[0] ?? "light");
   const a = theme.assets;

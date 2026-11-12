@@ -21,7 +21,7 @@ export interface PackContext {
   clientTheme: string;
   productName: string;
   /** Brand logos from admin.config.ts (used when the theme has no icon). */
-  logo?: { full: string; mark?: string };
+  logo?: { full?: string; mark?: string };
   accent: string;
   background: string;
   builds: AppBuild[];

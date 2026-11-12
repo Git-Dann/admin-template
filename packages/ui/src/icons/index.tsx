@@ -9,16 +9,17 @@ export { ICON_NAMES, type IconName, type IconComponent } from "./registry";
 /**
  * Icons are referenced by semantic name (`<Icon name="users" />`), never imported
  * from an icon library directly. A client picks its set in admin.config.ts:
- *   brand: { icons: "lucide" | "heroicons" }  or pass a custom partial map.
+ *   brand: { icons: "heroicons" (default) | "lucide" }  or pass a custom partial map.
+ * Never draw icons by hand: add a semantic name to registry.ts instead.
  */
 export const ICON_SETS = { lucide: lucideSet, heroicons: heroiconsSet } as const;
 export type IconSetName = keyof typeof ICON_SETS;
 export type IconSet = Record<IconName, IconComponent>;
 
-const IconContext = createContext<IconSet>(lucideSet);
+const IconContext = createContext<IconSet>(heroiconsSet);
 
 export function IconProvider({
-  set = "lucide",
+  set = "heroicons",
   overrides,
   children,
 }: {
@@ -42,7 +43,7 @@ const SIZES = { sm: 16, md: 20, lg: 24 } as const;
 
 export function Icon({ name, size = "md", label, className, ...rest }: IconProps) {
   const set = useContext(IconContext);
-  const Component = set[name] ?? lucideSet[name];
+  const Component = set[name] ?? heroiconsSet[name];
   const px = typeof size === "number" ? size : SIZES[size];
   return (
     <Component

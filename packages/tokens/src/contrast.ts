@@ -1,6 +1,6 @@
 import { parse, wcagContrast } from "culori";
 import type { Mode } from "./schema";
-import type { ResolvedTheme } from "./resolve";
+import { applyVariant, type ResolvedTheme } from "./resolve";
 
 export interface ContrastRule {
   fg: string;
@@ -36,10 +36,15 @@ export const CONTRAST_RULES: ContrastRule[] = [
   { fg: "focus-ring", bg: "surface", min: UI, why: "focus ring on cards" },
   { fg: "accent", bg: "surface", min: UI, why: "accent icon tiles, toggles, chart highlight" },
   ...[1, 2, 3, 4, 5, 6].map((n) => ({ fg: `chart-${n}`, bg: "surface", min: UI, why: "chart series on a card" })),
+  { fg: "sidebar-text", bg: "sidebar", min: TEXT, why: "sidebar labels" },
+  { fg: "sidebar-text-muted", bg: "sidebar", min: TEXT, why: "sidebar nav items and group headings" },
+  { fg: "sidebar-active-text", bg: "sidebar-active", min: TEXT, why: "active nav item" },
 ];
 
 export interface ContrastResult extends ContrastRule {
   mode: Mode;
+  /** Set when the pair was checked with a variant applied. */
+  variant?: string;
   ratio: number;
   pass: boolean;
   skipped?: string;
@@ -60,8 +65,16 @@ export function contrastRatio(a: string, b: string): number {
   return Math.round(wcagContrast(a, b) * 100) / 100;
 }
 
-/** Check every rule against every supported mode of a resolved theme. */
+/** Check every rule against every supported mode of a resolved theme, and every variant. */
 export function checkContrast(theme: ResolvedTheme, rules: ContrastRule[] = CONTRAST_RULES): ContrastResult[] {
+  const base = checkValues(theme, rules);
+  const variants = Object.keys(theme.variants ?? {}).flatMap((name) =>
+    checkValues(applyVariant(theme, name), rules).map((r) => ({ ...r, variant: name })),
+  );
+  return [...base, ...variants];
+}
+
+function checkValues(theme: ResolvedTheme, rules: ContrastRule[]): ContrastResult[] {
   const results: ContrastResult[] = [];
   for (const mode of theme.modes.supported) {
     const values = theme.values[mode] ?? {};

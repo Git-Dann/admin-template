@@ -24,7 +24,22 @@ export function themeCss(theme: ResolvedTheme): string {
   for (const mode of theme.modes.supported) {
     blocks.push(block(themeSelector(theme.id, mode), mode, diff(base, theme.values[mode] ?? {}, mode === theme.modes.default)));
   }
+  blocks.push(...variantBlocks(theme));
   return blocks.join("\n\n") + "\n";
+}
+
+/** `[data-theme][data-variant]` blocks. Shared by the Style Dictionary build and runtime CSS. */
+export function variantBlocks(theme: ResolvedTheme): string[] {
+  const out: string[] = [];
+  for (const [name, perMode] of Object.entries(theme.variants ?? {})) {
+    const base = perMode[theme.modes.default] ?? {};
+    out.push(block(`${themeSelector(theme.id)}[data-variant="${name}"]`, theme.modes.default, base));
+    for (const mode of theme.modes.supported) {
+      if (mode === theme.modes.default) continue;
+      out.push(block(`${themeSelector(theme.id, mode)}[data-variant="${name}"]`, mode, perMode[mode] ?? {}));
+    }
+  }
+  return out;
 }
 
 function diff(base: Record<string, string>, next: Record<string, string>, same: boolean): Record<string, string> {

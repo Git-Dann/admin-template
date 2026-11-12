@@ -26,7 +26,7 @@ try {
     for (const r of verbose ? results : failures) {
       const mark = r.pass ? c.green("pass") : c.red("FAIL");
       const ratio = r.skipped ? c.dim(r.skipped) : `${r.ratio.toFixed(2)}:1 (needs ${r.min}:1)`;
-      console.log(`  ${mark}  [${r.mode}] ${r.fg} on ${r.bg}  ${ratio}  ${c.dim(r.why)}`);
+      console.log(`  ${mark}  [${r.mode}${r.variant ? ` · ${r.variant}` : ""}] ${r.fg} on ${r.bg}  ${ratio}  ${c.dim(r.why)}`);
     }
   }
 } catch (error) {

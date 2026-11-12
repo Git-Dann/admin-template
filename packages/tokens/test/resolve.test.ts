@@ -58,3 +58,17 @@ describe("resolveThemes", () => {
     expect(cssVar("color.bg-elevated")).toBe("--gw-color-bg-elevated");
   });
 });
+
+describe("variants", () => {
+  it("resolves variant overrides per mode and emits data-variant CSS", async () => {
+    const { themeCss } = await import("../src");
+    const [theme] = resolveThemes([{ ...gitwork, id: "v", variants: { premium: { color: { sidebar: { light: "#013623", dark: "#000000" } } } } }]);
+    expect(theme!.variants.premium!.light!["color.sidebar"]).toBe("#013623");
+    expect(theme!.variants.premium!.dark!["color.sidebar"]).toBe("#000000");
+    expect(themeCss(theme!)).toContain('[data-theme="v"][data-variant="premium"] {');
+  });
+
+  it("rejects variant keys that aren't semantic colours", () => {
+    expect(() => resolveThemes([{ ...gitwork, id: "v", variants: { premium: { color: { sparkle: "#fff" } } } }])).toThrow(/isn't a semantic colour/);
+  });
+});

@@ -97,7 +97,7 @@ Components only use semantic tokens. Raw colours don't exist:
 
 Tailwind's default palette is removed (`--color-*: initial`), so `bg-red-500` simply doesn't compile, and lint rejects `bg-[#fff]`.
 
-**Token names:** `bg`, `bg-elevated`, `surface`, `surface-raised`, `border`, `border-strong`, `text`, `text-muted`, `text-on-accent`, `accent`, `accent-pressed`, `accent-subtle`, `accent-text`, `secondary`, `success|warning|danger|info` (each with `-subtle`), `focus-ring`, `overlay`, `chart-1…6`, plus `radius-*`, `space-*`, `size-*` (`control` = 44px), `shadow-*`, `font-display|body|mono`. The full list is in `packages/tokens/src/schema.ts`.
+**Token names:** `sidebar`, `sidebar-text`, `sidebar-text-muted`, `sidebar-active`, `sidebar-active-text`, `sidebar-border`, `sidebar-indicator`, `bg`, `bg-elevated`, `surface`, `surface-raised`, `border`, `border-strong`, `text`, `text-muted`, `text-on-accent`, `accent`, `accent-pressed`, `accent-subtle`, `accent-text`, `secondary`, `success|warning|danger|info` (each with `-subtle`), `focus-ring`, `overlay`, `chart-1…6`, plus `radius-*`, `space-*`, `size-*` (`control` = 44px), `shadow-*`, `font-display|body|mono`. The full list is in `packages/tokens/src/schema.ts`.
 
 **How it works:** `pnpm tokens:build` (runs automatically before `dev` and `build`) turns `packages/tokens/themes/*.json` into:
 
@@ -141,7 +141,11 @@ export default defineAdminConfig({
 
 Hover any field for docs. Mistakes (a module whose adapter is missing, a duplicate module) show up as a readable error screen in development.
 
-**Icons:** `brand.icons` is `"lucide"` (default) or `"heroicons"` (Fellas uses this). `brand.iconOverrides` swaps individual icons for brand ones. Components always use semantic names (`<Icon name="users" />`), so a set swap touches nothing else. To add an icon, add one line to `packages/ui/src/icons/registry.ts` with its Lucide and Heroicons names.
+**Icons:** Heroicons by default (`brand.icons: "heroicons"`), with Lucide available. Components always use semantic names (`<Icon name="users" />`), so a set swap touches nothing else. Never draw icons: to add one, add a line to `packages/ui/src/icons/registry.ts` with its Heroicons (and Lucide) name. `brand.iconOverrides` can swap individual icons for a client's own icon files.
+
+**Logos:** export the client's real logo from their Figma into `apps/admin-<client>/public/brand/` and set `brand.logo` (`full`, optional `mark` for the collapsed sidebar, optional `badge` text). Never draw a placeholder: without a logo the product name is shown. A logo made of several layers (like Fellas's) can be a small component, `brand.logo.component`, that positions the exported layers; see `apps/admin-fellas/brand/fellas-logo.tsx`.
+
+**Role-based looks:** a theme can define `variants`, for example Wedge's `premium` dark green sidebar, and `brand.variantByRole` picks one per role (`{ owner: "premium", admin: "premium" }`). Everyone else gets the base theme. Variants are contrast-checked like the rest of the theme.
 
 ## Adding or changing a theme
 

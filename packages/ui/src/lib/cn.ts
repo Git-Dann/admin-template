@@ -10,7 +10,7 @@ const twMerge = extendTailwindMerge({
         "bg", "bg-elevated", "surface", "surface-raised", "border", "border-strong", "text", "text-muted",
         "text-on-accent", "accent", "accent-pressed", "accent-subtle", "accent-text", "secondary",
         "success", "success-subtle", "warning", "warning-subtle", "danger", "danger-subtle", "info", "info-subtle",
-        "focus-ring", "overlay", "chart-1", "chart-2", "chart-3", "chart-4", "chart-5", "chart-6",
+        "focus-ring", "overlay", "sidebar", "sidebar-text", "sidebar-text-muted", "sidebar-active", "sidebar-active-text", "sidebar-border", "sidebar-indicator", "chart-1", "chart-2", "chart-3", "chart-4", "chart-5", "chart-6",
       ],
       spacing: ["control", "control-sm", "sidebar", "sidebar-collapsed", "topbar"],
       radius: ["sm", "md", "lg", "xl", "pill"],

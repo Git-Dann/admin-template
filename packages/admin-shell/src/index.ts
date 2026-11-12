@@ -5,6 +5,7 @@ export * from "./context";
 export * from "./theme-mode";
 export * from "./page-header";
 export * from "./sidebar";
+export * from "./brand-logo";
 export * from "./top-bar";
 export * from "./app-shell";
 export * from "./auth";

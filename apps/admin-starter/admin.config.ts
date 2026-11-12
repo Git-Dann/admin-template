@@ -18,8 +18,9 @@ export default defineAdminConfig({
   brand: {
     productName: "Starter Admin",
     theme: "gitwork",
-    logo: { full: "/brand/logo.svg", mark: "/brand/mark.svg", alt: "Starter" },
-    icons: "lucide",
+    // Add the client's real logo files to public/brand/ (export from their Figma; never draw one):
+    // logo: { full: "/brand/logo.svg", mark: "/brand/mark.svg", alt: "Acme" },
+    icons: "heroicons",
     version: "0.1.0",
   },
   modules: [dashboard(), reports(), users(), content(), coupons(), notifications(), themeBuilder(), rbac()],

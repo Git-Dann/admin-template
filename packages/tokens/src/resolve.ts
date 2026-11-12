@@ -9,6 +9,8 @@ import {
 } from "./schema";
 import { fontStack } from "./fonts";
 
+const SEMANTIC_COLOR_SET = new Set<string>(REQUIRED.color);
+
 export const CSS_PREFIX = "gw";
 
 export type TokenGroup = "color" | "radius" | "space" | "size" | "shadow" | "font";
@@ -22,6 +24,8 @@ export interface ResolvedTheme {
   fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec };
   /** Flat token paths (`color.accent`) to final CSS values, per supported mode. */
   values: Partial<Record<Mode, Record<string, string>>>;
+  /** Variant name → per-mode values that differ from the base (applied with data-variant). */
+  variants: Record<string, Partial<Record<Mode, Record<string, string>>>>;
 }
 
 export class ThemeError extends Error {
@@ -126,9 +130,26 @@ export function resolveTheme(file: ThemeFile): ResolvedTheme {
 
   const fonts = file.fonts ?? {};
   const values: ResolvedTheme["values"] = {};
+  const variants: ResolvedTheme["variants"] = {};
   for (const mode of modes.supported) {
     const raw = new Map<string, string>();
     for (const [path, token] of flat) raw.set(path, pickMode(rawValue(token), mode, modes.default));
+    for (const [name, variant] of Object.entries(file.variants ?? {})) {
+      const out: Record<string, string> = {};
+      const vraw = new Map(raw);
+      for (const [key, token] of Object.entries(variant.color)) {
+        if (!SEMANTIC_COLOR_SET.has(key)) problems.push(`variants.${name}.color.${key} isn't a semantic colour`);
+        vraw.set(`color.${key}`, pickMode(rawValue(token), mode, modes.default));
+      }
+      for (const key of Object.keys(variant.color)) {
+        try {
+          out[`color.${key}`] = resolveRefs(`color.${key}`, vraw);
+        } catch (error) {
+          problems.push(`variants.${name}.color.${key} (${mode}): ${(error as Error).message}`);
+        }
+      }
+      (variants[name] ??= {})[mode] = out;
+    }
     for (const kind of ["display", "body", "mono"] as const) {
       const spec = fonts[kind];
       if (spec) raw.set(`font.${kind}`, fontStack(spec));
@@ -154,7 +175,17 @@ export function resolveTheme(file: ThemeFile): ResolvedTheme {
     brand: file.brand ?? {},
     fonts,
     values,
+    variants,
   };
+}
+
+/** A theme with one variant's overrides applied, for contrast checks and previews. */
+export function applyVariant(theme: ResolvedTheme, name: string): ResolvedTheme {
+  const variant = theme.variants[name];
+  if (!variant) return theme;
+  const values: ResolvedTheme["values"] = {};
+  for (const mode of theme.modes.supported) values[mode] = { ...theme.values[mode], ...variant[mode] };
+  return { ...theme, values };
 }
 
 /** Parse, flatten `extends`, and resolve a set of theme files. */

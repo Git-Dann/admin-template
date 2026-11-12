@@ -44,15 +44,15 @@ describe("components", () => {
     expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ name: "a.json" }), { state: "invalid", message: "Not Lottie" });
   });
 
-  it("Icon swaps sets through IconProvider and hides decorative icons", () => {
+  it("Icon defaults to Heroicons, swaps sets through IconProvider and hides decorative icons", () => {
     const { container, rerender } = render(<Icon name="users" />);
-    const lucide = container.innerHTML;
+    const heroicons = container.innerHTML;
     expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
     rerender(
-      <IconProvider set="heroicons">
+      <IconProvider set="lucide">
         <Icon name="users" />
       </IconProvider>,
     );
-    expect(container.innerHTML).not.toBe(lucide);
+    expect(container.innerHTML).not.toBe(heroicons);
   });
 });

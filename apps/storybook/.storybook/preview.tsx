@@ -5,7 +5,7 @@ import { IconProvider } from "@gitwork/ui/icons";
 import { TooltipProvider } from "@gitwork/ui";
 import "@gitwork/ui/styles.css";
 
-const all = themes as ResolvedTheme[];
+const all = themes as unknown as ResolvedTheme[];
 
 // Load every theme's web fonts once.
 for (const href of new Set(all.flatMap((t) => fontStylesheets(t.fonts)))) {
@@ -32,7 +32,7 @@ const withTheme: Decorator = (Story, context) => {
   const fullscreen = context.parameters.layout === "fullscreen";
   const story = (
     <TooltipProvider>
-      <IconProvider set={(context.globals.icons as "lucide" | "heroicons") ?? "lucide"}>
+      <IconProvider set={(context.globals.icons as "lucide" | "heroicons") ?? "heroicons"}>
         <Story />
       </IconProvider>
     </TooltipProvider>
@@ -61,10 +61,10 @@ const preview: Preview = {
     },
     icons: {
       description: "Icon set",
-      toolbar: { title: "Icons", icon: "star", items: [{ value: "lucide", title: "Lucide" }, { value: "heroicons", title: "Heroicons" }], dynamicTitle: true },
+      toolbar: { title: "Icons", icon: "star", items: [{ value: "heroicons", title: "Heroicons" }, { value: "lucide", title: "Lucide" }], dynamicTitle: true },
     },
   },
-  initialGlobals: { theme: "compare", icons: "lucide" },
+  initialGlobals: { theme: "compare", icons: "heroicons" },
   parameters: {
     nextjs: { appDirectory: true },
     layout: "fullscreen",

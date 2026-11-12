@@ -5,7 +5,7 @@
  * and a Figma mapping stub, links the workspace, builds tokens and prints next steps.
  */
 import { execSync } from "node:child_process";
-import { cpSync, existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { formatHex, oklch, parse } from "culori";
 
@@ -73,7 +73,6 @@ writeFileSync(
   readFileSync(configPath, "utf8")
     .replace('productName: "Starter Admin"', `productName: "${title} Admin"`)
     .replace('theme: "gitwork"', `theme: "${id}"`)
-    .replace('alt: "Starter"', `alt: "${title}"`)
     .replace('flavour: "generic"', `flavour: "${flavour}"`),
 );
 const pwPath = join(appDir, "playwright.config.ts");
@@ -86,14 +85,10 @@ theme.id = id;
 if (!keepTheme) theme.name = title;
 if (darkFirst) theme.modes = { default: "dark", supported: theme.modes?.supported?.includes("dark") ? theme.modes.supported : ["dark"] };
 
-// Placeholder logo colour: the theme's accent if it's a literal colour, else Gitwork blue.
-const accentToken = theme.tokens?.color?.accent;
-const rawAccent: string | undefined = typeof accentToken === "string" ? accentToken : (accentToken?.light ?? accentToken?.dark);
-let brandColour = rawAccent && parse(rawAccent) ? formatHex(parse(rawAccent)!) : "#2F5BEA";
 if (accent) {
   const base = oklch(parse(accent)!)!;
   const hex = (l: number, chroma = base.c) => formatHex({ mode: "oklch", l: Math.min(0.98, Math.max(0.05, l)), c: chroma, h: base.h ?? 0 });
-  brandColour = formatHex(base);
+  const brandColour = formatHex(base);
   const light = { accent: brandColour, "accent-pressed": hex(base.l - 0.08), "accent-subtle": hex(0.95, base.c * 0.25), "accent-text": hex(Math.min(base.l, 0.48)), "focus-ring": brandColour, "chart-1": brandColour };
   const dark = { accent: hex(Math.max(base.l, 0.68)), "accent-pressed": hex(Math.max(base.l, 0.68) - 0.06), "accent-subtle": hex(0.26, base.c * 0.4), "accent-text": hex(0.78), "focus-ring": hex(0.78), "chart-1": hex(Math.max(base.l, 0.68)) };
   for (const [token, value] of Object.entries(light)) {
@@ -118,13 +113,11 @@ if (!existsSync(mappingPath)) writeFileSync(
   ) + "\n",
 );
 
-/* -------------------------- 3. placeholder logos -------------------------- */
+/* ------------------------------- 3. logos ------------------------------- */
 
-const initial = title[0]!;
-const mark = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="${brandColour}"/><text x="16" y="22" text-anchor="middle" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#fff">${initial}</text></svg>\n`;
-const logo = `<svg xmlns="http://www.w3.org/2000/svg" width="${48 + title.length * 11}" height="32" viewBox="0 0 ${48 + title.length * 11} 32"><rect width="32" height="32" rx="9" fill="${brandColour}"/><text x="16" y="22" text-anchor="middle" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#fff">${initial}</text><text x="42" y="22.5" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#6B7586">${title}</text></svg>\n`;
-writeFileSync(join(appDir, "public/brand/mark.svg"), mark);
-writeFileSync(join(appDir, "public/brand/logo.svg"), logo);
+// No placeholder logos are drawn: until the client's real logo files are added, the sidebar
+// shows the product name. Export them from the client's Figma into public/brand/.
+mkdirSync(join(appDir, "public/brand"), { recursive: true });
 
 /* --------------------------- 4. link and build --------------------------- */
 
@@ -154,7 +147,8 @@ ${c.green("✓")} Created ${c.bold(`${title} Admin`)} in ${seconds}s
 
 ${c.bold("Next steps")}
   1. pnpm --filter admin-${id} dev        → http://localhost:${port}
-  2. Replace apps/admin-${id}/public/brand/{logo,mark}.svg with real logos
+  2. Export the client's real logo from their Figma into apps/admin-${id}/public/brand/
+     and set brand.logo in admin.config.ts (until then the product name is shown)
   3. Set colours and fonts in themes/${id}.json, or import from Figma:
        pnpm tokens:import ./figma-export.json --client ${id}
   4. Turn modules on or off and edit nav and roles in admin.config.ts

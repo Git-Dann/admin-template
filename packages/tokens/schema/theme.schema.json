@@ -747,6 +747,92 @@
         }
       },
       "additionalProperties": false
+    },
+    "variants": {
+      "description": "Named colour overrides applied with data-variant=\"<name>\", e.g. a premium look for some roles",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "light": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "dark": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$value": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "light": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "dark": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "$type": {
+                      "type": "string"
+                    },
+                    "$description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "$value"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "color"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "required": [

@@ -7,7 +7,7 @@ import { cn } from "@gitwork/ui";
 import { Sidebar } from "./sidebar";
 import { TopBar } from "./top-bar";
 import { PageMetaProvider } from "./page-header";
-import { useAdminConfig } from "./context";
+import { useAdminConfig, useSession } from "./context";
 
 const COLLAPSE_KEY = "gw-sidebar-collapsed";
 
@@ -20,6 +20,18 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user } = useSession();
+  const variant = user ? config.brand.variantByRole?.[user.roleId] : undefined;
+
+  // Role-based theme variant (e.g. Wedge admins get the premium dark green sidebar).
+  useEffect(() => {
+    const root = document.documentElement;
+    if (variant) root.dataset.variant = variant;
+    else delete root.dataset.variant;
+    return () => {
+      delete root.dataset.variant;
+    };
+  }, [variant]);
 
   useEffect(() => {
     try {
@@ -54,14 +66,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <div className="flex min-h-dvh">
-        <aside className={cn("sticky top-0 hidden h-dvh shrink-0 border-r border-border transition-[width] duration-200 lg:block", collapsed ? "w-sidebar-collapsed" : "w-sidebar")}>
+        <aside className={cn("sticky top-0 hidden h-dvh shrink-0 border-r border-sidebar-border transition-[width] duration-200 lg:block", collapsed ? "w-sidebar-collapsed" : "w-sidebar")}>
           <Sidebar collapsed={collapsed} onToggle={toggle} />
         </aside>
 
         <Dialog.Root open={mobileOpen} onOpenChange={setMobileOpen}>
           <Dialog.Portal>
             <Dialog.Overlay className="fixed inset-0 z-40 bg-overlay lg:hidden" />
-            <Dialog.Content className="fixed inset-y-0 left-0 z-50 w-sidebar max-w-[85vw] border-r border-border shadow-lg focus:outline-none lg:hidden">
+            <Dialog.Content className="fixed inset-y-0 left-0 z-50 w-sidebar max-w-[85vw] border-r border-sidebar-border shadow-lg focus:outline-none lg:hidden">
               <Dialog.Title className="sr-only">Navigation</Dialog.Title>
               <Dialog.Description className="sr-only">Main navigation</Dialog.Description>
               <Sidebar onNavigate={() => setMobileOpen(false)} />

@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Button, Card, Input, Label, RoleBadge, Spinner } from "@gitwork/ui";
 import { useAdminConfig, useSession } from "./context";
+import { BrandLogo } from "./brand-logo";
 
 function FullScreen({ children }: { children: ReactNode }) {
   return <div className="flex min-h-dvh items-center justify-center p-4">{children}</div>;
@@ -56,12 +57,14 @@ export function LoginScreen() {
     }
   };
 
-  const { logo, productName } = config.brand;
+  const { productName } = config.brand;
   return (
     <FullScreen>
       <Card className="w-full max-w-sm p-8">
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
-          {logo ? <img src={logo.full} alt={logo.alt ?? productName} className="h-10 w-auto" /> : null}
+          <div className="flex w-full justify-center rounded-lg bg-sidebar px-5 py-4 text-sidebar-text">
+            <BrandLogo />
+          </div>
           <h1 className="text-xl font-semibold text-text">Sign in to {productName}</h1>
         </div>
         <form onSubmit={submit} className="grid gap-4" noValidate>

@@ -15,20 +15,20 @@ import { modeScript } from "./mode-script";
 type Brand = AdminConfig["brand"];
 
 function themeFor(id: string): ResolvedTheme {
-  const theme = (themes as ResolvedTheme[]).find((t) => t.id === id);
+  const theme = (themes as unknown as ResolvedTheme[]).find((t) => t.id === id);
   if (!theme) {
-    const ids = (themes as ResolvedTheme[]).map((t) => t.id).join(", ");
+    const ids = (themes as unknown as ResolvedTheme[]).map((t) => t.id).join(", ");
     throw new Error(`Theme "${id}" not found. Add packages/tokens/themes/${id}.json or use one of: ${ids}.`);
   }
   return theme;
 }
 
 export function adminMetadata(brand: Brand) {
-  const theme = themeFor(brand.theme);
+  themeFor(brand.theme); // fail early with a helpful message if the theme id is wrong
   return {
     title: { default: brand.productName, template: `%s · ${brand.productName}` },
     applicationName: brand.productName,
-    icons: { icon: theme.brand.favicon ?? brand.logo?.mark ?? "/favicon.ico" },
+    ...(brand.logo?.mark ? { icons: { icon: brand.logo.mark } } : {}),
     robots: { index: false, follow: false },
   };
 }

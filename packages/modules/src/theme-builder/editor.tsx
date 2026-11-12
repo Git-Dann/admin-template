@@ -38,7 +38,7 @@ import { applyOverrides, checkImageSize, iconRelease, IMAGE_RULES, importColourT
 import { ThemePreview } from "./preview";
 import { downloadBlob } from "../shared";
 
-const allThemes = themesJson as ResolvedTheme[];
+const allThemes = themesJson as unknown as ResolvedTheme[];
 const orBlack = (v: string | undefined) => v ?? "#000000";
 
 const blank = (): SeasonalTheme => ({

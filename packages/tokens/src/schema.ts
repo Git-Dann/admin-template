@@ -29,6 +29,13 @@ export const SEMANTIC_COLORS = [
   "info-subtle",
   "focus-ring",
   "overlay",
+  "sidebar",
+  "sidebar-text",
+  "sidebar-text-muted",
+  "sidebar-active",
+  "sidebar-active-text",
+  "sidebar-border",
+  "sidebar-indicator",
   "chart-1",
   "chart-2",
   "chart-3",
@@ -119,6 +126,13 @@ export const themeFileSchema = z
       })
       .strict()
       .optional(),
+    variants: z
+      .record(
+        z.string().regex(/^[a-z][a-z0-9-]*$/, "Use lower-case letters, numbers and dashes"),
+        z.object({ color: z.record(z.string(), token) }).strict(),
+      )
+      .optional()
+      .describe('Named colour overrides applied with data-variant="<name>", e.g. a premium look for some roles'),
   })
   .strict();
 

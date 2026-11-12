@@ -2,19 +2,42 @@
   "$schema": "../schema/theme.schema.json",
   "id": "fellas",
   "name": "Fellas Loaded",
-  "modes": { "default": "dark", "supported": ["dark"] },
-  "brand": {
-    "logo": { "full": "/brand/logo.svg", "mark": "/brand/mark.svg" },
-    "favicon": "/brand/mark.svg"
+  "modes": {
+    "default": "dark",
+    "supported": [
+      "dark"
+    ]
   },
   "fonts": {
-    "display": { "family": "Barlow", "source": "google", "weights": [600, 700, 800] },
-    "body": { "family": "Barlow", "source": "google", "weights": [400, 500, 600] }
+    "display": {
+      "family": "Barlow",
+      "source": "google",
+      "weights": [
+        600,
+        700,
+        800
+      ]
+    },
+    "body": {
+      "family": "Barlow",
+      "source": "google",
+      "weights": [
+        400,
+        500,
+        600
+      ]
+    }
   },
   "tokens": {
     "palette": {
-      "red": { "500": "#EA140D", "600": "#C10F09", "tint": "#FF5E57" },
-      "gold": { "500": "#FFC043" }
+      "red": {
+        "500": "#EA140D",
+        "600": "#C10F09",
+        "tint": "#FF5E57"
+      },
+      "gold": {
+        "500": "#FFC043"
+      }
     },
     "color": {
       "bg": "#0E0302",
@@ -46,11 +69,40 @@
       "chart-3": "#FF8A65",
       "chart-4": "#5AB0FF",
       "chart-5": "#B48CFF",
-      "chart-6": "#A39495"
+      "chart-6": "#A39495",
+      "sidebar": "#140707",
+      "sidebar-text": "#FFFFFF",
+      "sidebar-text-muted": "#B8A9AA",
+      "sidebar-active": "#2A1215",
+      "sidebar-active-text": "#FFFFFF",
+      "sidebar-border": "#431418",
+      "sidebar-indicator": "{palette.red.500}"
     },
-    "radius": { "sm": "6px", "md": "10px", "lg": "14px", "xl": "20px", "pill": "999px" },
-    "space": { "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "20px", "6": "24px", "8": "32px", "10": "40px", "12": "48px" },
-    "size": { "control": "44px", "control-sm": "32px", "sidebar": "264px", "sidebar-collapsed": "72px", "topbar": "72px" },
+    "radius": {
+      "sm": "6px",
+      "md": "10px",
+      "lg": "14px",
+      "xl": "20px",
+      "pill": "999px"
+    },
+    "space": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "8": "32px",
+      "10": "40px",
+      "12": "48px"
+    },
+    "size": {
+      "control": "44px",
+      "control-sm": "32px",
+      "sidebar": "264px",
+      "sidebar-collapsed": "72px",
+      "topbar": "72px"
+    },
     "shadow": {
       "sm": "0 1px 2px rgb(0 0 0 / 0.5)",
       "md": "0 6px 16px -4px rgb(0 0 0 / 0.6)",

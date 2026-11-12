@@ -171,7 +171,7 @@ function AccountMenu() {
   const config = useAdminConfig();
   const { user, signOut, switchRole } = useSession();
   const [mode, setMode] = useThemeMode();
-  const theme = (themes as ResolvedTheme[]).find((t) => t.id === config.brand.theme);
+  const theme = (themes as unknown as ResolvedTheme[]).find((t) => t.id === config.brand.theme);
   const canToggleMode = (theme?.modes.supported.length ?? 0) > 1;
   if (!user) return null;
   const role = config.roles.find((r) => r.id === user.roleId);

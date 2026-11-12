@@ -1,10 +1,11 @@
 /**
  * Fellas Loaded: streaming app. Dark UI, red brand, seasonal themes.
- * Uses Heroicons to show the icon set is swappable per client.
+ * Real logo from the Fellas Figma (brand/fellas-logo.tsx).
  */
 import { defineAdminConfig } from "@gitwork/admin-shell";
 import type { RoleDefinition } from "@gitwork/data";
 import { createMockAdapters } from "@gitwork/data/mock";
+import { FellasLogo } from "./brand/fellas-logo";
 import { content, coupons, dashboard, notifications, rbac, reports, themeBuilder, users } from "@gitwork/modules";
 
 const roles: RoleDefinition[] = [
@@ -19,7 +20,8 @@ export default defineAdminConfig({
   brand: {
     productName: "Fellas Admin",
     theme: "fellas",
-    logo: { full: "/brand/logo.svg", mark: "/brand/mark.svg", alt: "Fellas Loaded" },
+    // Real logo from the Fellas Figma. `full` (the wordmark) is used in exported asset packs.
+    logo: { full: "/brand/fellas-wordmark.svg", alt: "Fellas Admin", component: FellasLogo },
     icons: "heroicons",
     version: "4.12.0",
   },

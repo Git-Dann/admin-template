@@ -1,3 +1,4 @@
+import type { ComponentType } from "react";
 import type { Adapters, RoleDefinition } from "@gitwork/data";
 import type { IconLike, IconSet, IconSetName } from "@gitwork/ui/icons";
 import type { AdminModule } from "./module";
@@ -23,7 +24,24 @@ export interface AdminConfig {
     productName: string;
     /** Theme id from packages/tokens/themes/<id>.json. */
     theme: string;
-    logo?: { full: string; mark?: string; alt?: string };
+    /**
+     * The client's real logo files (exported from their Figma, never drawn). Without one the
+     * product name is shown as text. `full` is also used in exported asset packs.
+     */
+    logo?: {
+      full?: string;
+      mark?: string;
+      alt?: string;
+      /** For logos made of several layers: a component that renders them. Wins over `full`. */
+      component?: ComponentType<{ collapsed?: boolean }>;
+      /** Small label beside the logo, e.g. "Admin console". */
+      badge?: string;
+    };
+    /**
+     * Theme variant per role, e.g. { owner: "premium", admin: "premium" }. Applied as
+     * data-variant on <html> for the signed-in user. Variants are defined in the theme file.
+     */
+    variantByRole?: Record<string, string>;
     /** Icon set for the whole app. */
     icons?: IconSetName;
     /** Swap individual icons for brand-specific ones. */

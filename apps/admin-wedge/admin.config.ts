@@ -18,8 +18,11 @@ export default defineAdminConfig({
   brand: {
     productName: "Wedge Admin",
     theme: "wedge",
-    logo: { full: "/brand/logo.svg", mark: "/brand/mark.svg", alt: "Wedge" },
-    icons: "lucide",
+    // Real wordmark from the Wedge Figma (white, for the green sidebar).
+    logo: { full: "/brand/wedge-wordmark.svg", alt: "Wedge", badge: "Admin console" },
+    icons: "heroicons",
+    // Owners and admins get the premium dark green; everyone else gets brand green.
+    variantByRole: { owner: "premium", admin: "premium" },
     version: "2.4.0",
   },
   modules: [

@@ -4,7 +4,7 @@ import type { ResolvedTheme } from "@gitwork/tokens";
 import type { AppBuild } from "@gitwork/data";
 import { applyOverrides, checkImageSize, iconRelease, IMAGE_RULES, importColourTokens, publishBlockers, seasonalContrast, seasonalCss, slugify, validateLottie } from "../src/theme-builder/logic";
 
-const fellas = (themes as ResolvedTheme[]).find((t) => t.id === "fellas")!;
+const fellas = (themes as unknown as ResolvedTheme[]).find((t) => t.id === "fellas")!;
 const lottie = { v: "5.12.1", fr: 60, ip: 0, op: 180, w: 1080, h: 1920, layers: [] };
 
 describe("Lottie validation", () => {
