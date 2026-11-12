@@ -37,7 +37,9 @@ export function useZodForm<S extends z.ZodType<FieldValues, FieldValues>>(
 }
 
 interface BaseFieldProps<T extends FieldValues> {
-  control: Control<T>;
+  /** form.control. Accepts forms whose submitted type differs from the input type (Zod coercion). */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- context/output generics are irrelevant to a field
+  control: Control<T, any, any>;
   name: FieldPath<T>;
   label: ReactNode;
   description?: ReactNode;

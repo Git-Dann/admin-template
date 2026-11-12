@@ -50,6 +50,11 @@ function isOpaque(value: string): boolean {
   return !!c && (c.alpha === undefined || c.alpha >= 1);
 }
 
+/** True when the string is a CSS colour culori understands (hex, rgb(), hsl(), oklch()…). */
+export function isColour(value: string): boolean {
+  return parse(value) !== undefined;
+}
+
 /** WCAG contrast ratio between two CSS colours (any format culori can parse). */
 export function contrastRatio(a: string, b: string): number {
   return Math.round(wcagContrast(a, b) * 100) / 100;

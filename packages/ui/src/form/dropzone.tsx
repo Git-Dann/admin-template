@@ -18,10 +18,12 @@ export interface UploadedFile {
   file?: File;
 }
 
-export type FileStatus = { state: "idle" } | { state: "checking" } | { state: "valid"; message?: string } | { state: "invalid"; message: string };
+export type FileStatus = { state: "idle" } | { state: "checking" } | { state: "valid"; message?: string; warning?: string } | { state: "invalid"; message: string };
 
 /** Result of a validator: an error message, or null/undefined if ok. Optionally adds meta. */
-export type FileValidator = (file: File) => Promise<{ error?: string; meta?: string } | void> | { error?: string; meta?: string } | void;
+export type FileValidator = (
+  file: File,
+) => Promise<{ error?: string; warning?: string; meta?: string } | void> | { error?: string; warning?: string; meta?: string } | void;
 
 /** Uploaded-file chip: name, meta, replace/remove, validation state. */
 export function FileChip({
@@ -44,7 +46,7 @@ export function FileChip({
     <div
       className={cn(
         "flex items-center gap-3 rounded-md border bg-surface p-3",
-        status.state === "invalid" ? "border-danger" : status.state === "valid" ? "border-success/60" : "border-border",
+        status.state === "invalid" ? "border-danger" : status.state === "valid" && status.warning ? "border-warning" : status.state === "valid" ? "border-success/60" : "border-border",
         className,
       )}
     >
@@ -57,10 +59,11 @@ export function FileChip({
           {[formatBytes(file.size), file.meta].filter(Boolean).join(" · ")}
         </p>
         {status.state === "invalid" && <p role="alert" className="mt-0.5 text-xs font-medium text-danger">{status.message}</p>}
-        {status.state === "valid" && status.message && <p className="mt-0.5 text-xs text-success">{status.message}</p>}
+        {status.state === "valid" && status.warning && <p className="mt-0.5 text-xs font-medium text-warning">{status.warning}</p>}
+        {status.state === "valid" && !status.warning && status.message && <p className="mt-0.5 text-xs text-success">{status.message}</p>}
       </div>
       {status.state === "checking" && <Icon name="spinner" size="sm" className="animate-spin text-text-muted" label="Checking file" />}
-      {status.state === "valid" && <Icon name="success" size="sm" className="text-success" label="Valid" />}
+      {status.state === "valid" && (status.warning ? <Icon name="warning" size="sm" className="text-warning" label="Check this" /> : <Icon name="success" size="sm" className="text-success" label="Valid" />)}
       {status.state === "invalid" && <Icon name="error" size="sm" className="text-danger" label="Invalid" />}
       <div className="flex shrink-0 items-center gap-1">
         {onReplace && <Button variant="ghost" size="sm" onClick={onReplace}>Replace</Button>}
@@ -129,7 +132,7 @@ export function FileDropzone({
         try {
           const result = (await validate(file)) ?? {};
           if (result.meta) uploaded.meta = result.meta;
-          next = result.error ? { state: "invalid", message: result.error } : { state: "valid" };
+          next = result.error ? { state: "invalid", message: result.error } : { state: "valid", warning: result.warning };
         } catch (error) {
           next = { state: "invalid", message: (error as Error).message };
         }
