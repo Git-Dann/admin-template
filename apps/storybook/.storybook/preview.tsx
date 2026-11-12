@@ -1,9 +1,9 @@
 import type { Decorator, Preview } from "@storybook/nextjs-vite";
 import { fontStylesheets, type ResolvedTheme } from "@gitwork/tokens";
 import themes from "@gitwork/tokens/themes.json";
-import { IconProvider } from "../src/icons";
-import { TooltipProvider } from "../src/components/overlays";
-import "../src/styles.css";
+import { IconProvider } from "@gitwork/ui/icons";
+import { TooltipProvider } from "@gitwork/ui";
+import "@gitwork/ui/styles.css";
 
 const all = themes as ResolvedTheme[];
 

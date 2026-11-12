@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 const config: StorybookConfig = {
   framework: "@storybook/nextjs-vite",
-  stories: ["../src/**/*.stories.@(ts|tsx)", "../../admin-shell/src/**/*.stories.@(ts|tsx)", "../../modules/src/**/*.stories.@(ts|tsx)"],
+  stories: ["../../../packages/*/src/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y"],
   core: { disableTelemetry: true },
   async viteFinal(config) {

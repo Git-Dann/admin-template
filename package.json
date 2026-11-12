@@ -13,7 +13,7 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "e2e": "turbo run e2e",
-    "storybook": "turbo run storybook --filter=@gitwork/ui",
+    "storybook": "turbo run storybook --filter=storybook",
     "tokens:build": "pnpm --filter @gitwork/tokens build",
     "tokens:check": "pnpm --filter @gitwork/tokens check",
     "tokens:import": "pnpm --filter @gitwork/tokens import-figma",

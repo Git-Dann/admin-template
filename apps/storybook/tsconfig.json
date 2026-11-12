@@ -1,0 +1,4 @@
+{
+  "extends": "@gitwork/config/tsconfig/library.json",
+  "include": [".storybook/*.ts", ".storybook/*.tsx", ".storybook/env.d.ts"]
+}

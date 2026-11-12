@@ -1,5 +1,5 @@
 {
   "extends": "@gitwork/config/tsconfig/library.json",
   "compilerOptions": { "types": ["node", "vitest/globals", "@testing-library/jest-dom"] },
-  "include": ["src", "test", ".storybook"]
+  "include": ["src", "test"]
 }
