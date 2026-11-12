@@ -345,6 +345,7 @@ Each app's `wrangler.jsonc` names the Worker (`gitwork-admin-<client>`) and uses
 - **TypeScript 6 and ESLint 9:** the latest majors (TS 7, ESLint 10) aren't supported by typescript-eslint and jsx-a11y yet. Upgrade when they are.
 - **SF Pro** can't be self-hosted on the web under Apple's licence. Wedge uses the system stack, which renders SF on Apple devices.
 - **Clash Display** loads from Fontshare's CDN. Self-host it via `source: "local"` if a client needs no third-party requests.
+- **Fellas logo font:** "ADMIN" in the Fellas logo uses Permanent Marker, self-hosted from `apps/admin-fellas/brand/fonts/` (Apache 2.0, licence alongside). Theme fonts (Barlow, Inter, Clash Display) still load from Google Fonts or Fontshare; switch a theme font to `source: "local"` to self-host it too.
 - **Fellas red** (`#EA140D`) is 4.46:1 on the Fellas background, just under AA for text. Links and active labels use `accent-text` (`#FF5E57`). `border-strong` was raised to `#A85C62` to pass 3:1 for input edges. Brand red also sits close to the `danger` colour, so destructive actions rely on labels and icons as well as colour.
 - **Asset packs are built in the browser.** Fine for reviews and small teams. For production, consider moving `buildPack` server-side for consistent image encoding.
 - **Lottie isn't played in the preview** (the fallback still is shown) to avoid shipping a Lottie player. Add `lottie-web` to the preview if designers want motion there.
