@@ -22,7 +22,13 @@ export function AdminApp({ config, children }: { config: AdminConfig; children: 
 export function AdminLogin({ config }: { config: AdminConfig }) {
   return (
     <AdminProvider config={config}>
-      <Suspense fallback={<Spinner />}>
+      <Suspense
+        fallback={
+          <div className="flex min-h-dvh items-center justify-center">
+            <Spinner />
+          </div>
+        }
+      >
         <LoginScreen />
       </Suspense>
     </AdminProvider>

@@ -79,7 +79,7 @@ export function Tag({ tone = "neutral", onRemove, removeLabel = "Remove", classN
     <span className={cn("inline-flex h-6 items-center gap-1 rounded-sm px-2 text-xs font-medium", toneSoft[tone], className)} {...props}>
       {children}
       {onRemove && (
-        <button type="button" onClick={onRemove} aria-label={`${removeLabel} ${typeof children === "string" ? children : ""}`.trim()} className="-mr-1 rounded-sm p-0.5 hover:bg-surface focus-ring">
+        <button type="button" onClick={onRemove} aria-label={`${removeLabel} ${typeof children === "string" ? children : ""}`.trim()} className="hit-area -mr-1 rounded-sm p-0.5 hover:bg-surface focus-ring">
           <Icon name="close" size={12} />
         </button>
       )}
@@ -106,7 +106,7 @@ export function CodeChip({ code, copyable = true, className }: { code: string; c
         <button
           type="button"
           onClick={copy}
-          className="flex h-full items-center px-1.5 text-text-muted hover:text-text focus-ring rounded-r-sm"
+          className="hit-area flex h-full items-center rounded-r-sm px-1.5 text-text-muted hover:text-text focus-ring"
           aria-label={copied ? `Copied ${code}` : `Copy ${code}`}
         >
           <Icon name={copied ? "check" : "copy"} size={14} className={copied ? "text-success" : undefined} />

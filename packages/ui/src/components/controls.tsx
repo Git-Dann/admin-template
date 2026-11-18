@@ -13,7 +13,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<t
     <C.Root
       ref={ref}
       className={cn(
-        "flex size-5 shrink-0 items-center justify-center rounded-[5px] border border-border-strong bg-surface focus-ring data-[state=checked]:border-accent data-[state=checked]:bg-accent data-[state=indeterminate]:bg-accent data-[state=indeterminate]:border-accent text-text-on-accent disabled:opacity-50",
+        "hit-area flex size-5 shrink-0 items-center justify-center rounded-[5px] border border-border-strong bg-surface focus-ring data-[state=checked]:border-accent data-[state=checked]:bg-accent data-[state=indeterminate]:bg-accent data-[state=indeterminate]:border-accent text-text-on-accent disabled:opacity-50",
         className,
       )}
       {...props}
@@ -32,7 +32,7 @@ export const Switch = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typ
     <Sw.Root
       ref={ref}
       className={cn(
-        "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-pill border border-border-strong bg-surface-raised transition-colors focus-ring data-[state=checked]:border-accent data-[state=checked]:bg-accent disabled:cursor-not-allowed disabled:opacity-50",
+        "hit-area inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-pill border border-border-strong bg-surface-raised transition-colors focus-ring data-[state=checked]:border-accent data-[state=checked]:bg-accent disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       {...props}
@@ -50,7 +50,7 @@ export const Radio = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<type
   return (
     <R.Item
       ref={ref}
-      className={cn("flex size-5 shrink-0 items-center justify-center rounded-pill border border-border-strong bg-surface focus-ring data-[state=checked]:border-accent", className)}
+      className={cn("hit-area flex size-5 shrink-0 items-center justify-center rounded-pill border border-border-strong bg-surface focus-ring data-[state=checked]:border-accent", className)}
       {...props}
     >
       <R.Indicator className="size-2.5 rounded-pill bg-accent" />
@@ -96,7 +96,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
         aria-invalid={ariaInvalid}
         className={cn(
           "inline-flex w-full items-center justify-between gap-2 rounded-md border border-border-strong bg-surface px-3 text-sm text-text focus-ring data-[placeholder]:text-text-muted aria-[invalid=true]:border-danger disabled:opacity-50",
-          size === "md" ? "h-control" : "h-control-sm",
+          size === "md" ? "h-control" : "h-control-sm touch:h-control",
           className,
         )}
       >
@@ -113,7 +113,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
                 key={o.value}
                 value={o.value}
                 disabled={o.disabled}
-                className="relative flex h-control-sm cursor-pointer select-none items-center gap-2 rounded-sm pl-2.5 pr-8 text-sm text-text outline-none data-[highlighted]:bg-surface-raised data-[disabled]:opacity-50"
+                className="relative flex h-control-sm cursor-pointer select-none items-center gap-2 rounded-sm pl-2.5 pr-8 touch:h-control text-sm text-text outline-none data-[highlighted]:bg-surface-raised data-[disabled]:opacity-50"
               >
                 {renderIcon(o.icon, { size: "sm" })}
                 <S.ItemText>{o.label}</S.ItemText>
@@ -135,7 +135,7 @@ export const Tabs = Tb.Root;
 export const TabsContent = Tb.Content;
 
 export function TabsList({ className, ...props }: ComponentPropsWithoutRef<typeof Tb.List>) {
-  return <Tb.List className={cn("inline-flex h-control items-center gap-1 rounded-md bg-surface-raised p-1", className)} {...props} />;
+  return <Tb.List className={cn("inline-flex h-control max-w-full items-center gap-1 rounded-md bg-surface-raised p-0.5", className)} {...props} />;
 }
 
 export function TabsTrigger({ className, ...props }: ComponentPropsWithoutRef<typeof Tb.Trigger>) {

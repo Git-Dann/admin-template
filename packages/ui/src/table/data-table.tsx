@@ -24,6 +24,7 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useIsMobile } from "../lib/use-media";
 import { formatNumber } from "../lib/format";
 import { Icon, type IconLike } from "../icons";
 import { Button } from "../components/button";
@@ -239,6 +240,8 @@ export function DataTable<T extends RowData>({
   const rows = table.getRowModel().rows;
   const visibleColumns = table.getVisibleLeafColumns();
   const hideable = table.getAllLeafColumns().filter((c) => c.getCanHide());
+  // Phones get a card per row instead of a table that scrolls sideways.
+  const isMobile = useIsMobile();
 
   let body: ReactNode;
   if (error) {
@@ -302,10 +305,10 @@ export function DataTable<T extends RowData>({
 
   return (
     <div className={cn("flex flex-col gap-3", className)}>
-      {(toolbar || (columnToggle && hideable.length > 0)) && (
+      {(toolbar || (columnToggle && hideable.length > 0 && !isMobile)) && (
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">{toolbar}</div>
-          {columnToggle && hideable.length > 0 && (
+          {columnToggle && hideable.length > 0 && !isMobile && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="secondary" icon="columns">Columns</Button>
@@ -336,6 +339,20 @@ export function DataTable<T extends RowData>({
         </div>
       )}
 
+      {isMobile ? (
+        <MobileCards
+          table={table}
+          label={label}
+          loading={loading || data === undefined}
+          error={error}
+          onRetry={onRetry}
+          empty={empty}
+          selectable={selectable}
+          onRowClick={onRowClick}
+          sorting={effectiveSorting}
+          skeletons={Math.min(size, 4)}
+        />
+      ) : (
       <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
         <div className="overflow-auto" style={maxHeight ? { maxHeight } : undefined}>
           <table className="w-full border-collapse" aria-label={label} aria-busy={loading || undefined}>
@@ -362,7 +379,7 @@ export function DataTable<T extends RowData>({
                           <button
                             type="button"
                             onClick={header.column.getToggleSortingHandler()}
-                            className={cn("inline-flex items-center gap-1 rounded-sm uppercase hover:text-text focus-ring", meta?.align === "right" && "flex-row-reverse")}
+                            className={cn("hit-area inline-flex items-center gap-1 rounded-sm uppercase hover:text-text focus-ring", meta?.align === "right" && "flex-row-reverse")}
                           >
                             <FlexRender header={header} />
                             <Icon name={sorted === "asc" ? "arrow-up" : sorted === "desc" ? "arrow-down" : "sort"} size={14} className={sorted ? "text-accent-text" : "opacity-50"} />
@@ -380,6 +397,7 @@ export function DataTable<T extends RowData>({
           </table>
         </div>
       </div>
+      )}
 
       {total > 0 && !error && (
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-text-muted">
@@ -388,7 +406,7 @@ export function DataTable<T extends RowData>({
           </p>
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
-              <span aria-hidden>Rows</span>
+              <span aria-hidden className="max-sm:hidden">Rows</span>
               <Select
                 size="sm"
                 aria-label="Rows per page"
@@ -406,6 +424,156 @@ export function DataTable<T extends RowData>({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/* ------------------------------ mobile cards ------------------------------ */
+
+function columnLabel<T extends RowData>(column: ReturnType<ReturnType<typeof useTable<DataTableFeatures, T>>["getAllLeafColumns"]>[number]): string {
+  const header = column.columnDef.header;
+  return column.columnDef.meta?.label ?? (typeof header === "string" ? header : column.id);
+}
+
+function MobileCards<T extends RowData>({
+  table,
+  label,
+  loading,
+  error,
+  onRetry,
+  empty,
+  selectable,
+  onRowClick,
+  sorting,
+  skeletons,
+}: {
+  table: ReturnType<typeof useTable<DataTableFeatures, T>>;
+  label: string;
+  loading: boolean;
+  error: unknown;
+  onRetry?: () => void;
+  empty: NonNullable<DataTableProps<T>["empty"]>;
+  selectable?: boolean;
+  onRowClick?: (row: T) => void;
+  sorting: SortingState;
+  skeletons: number;
+}) {
+  const columns = table.getVisibleLeafColumns().filter((c) => !c.id.startsWith("__"));
+  const [titleColumn, ...detailColumns] = columns;
+  const sortable = table.getAllLeafColumns().filter((c) => c.getCanSort() && !c.id.startsWith("__"));
+  const current = sorting[0];
+  const rows = table.getRowModel().rows;
+
+  const sortControl = sortable.length > 0 && (
+    <Select
+      aria-label="Sort by"
+      size="sm"
+      className="w-auto min-w-0 flex-1"
+      placeholder="Sort by…"
+      value={current ? `${current.id}:${current.desc ? "desc" : "asc"}` : undefined}
+      onValueChange={(v) => {
+        const [id, dir] = v.split(":");
+        table.setSorting([{ id: id!, desc: dir === "desc" }]);
+      }}
+      options={sortable.flatMap((c) => [
+        { value: `${c.id}:asc`, label: `${columnLabel(c)} ↑` },
+        { value: `${c.id}:desc`, label: `${columnLabel(c)} ↓` },
+      ])}
+    />
+  );
+
+  let body: ReactNode;
+  if (error) body = <ErrorState compact error={error} onRetry={onRetry} />;
+  else if (loading) {
+    body = (
+      <ul className="space-y-3" aria-busy>
+        {Array.from({ length: skeletons }, (_, i) => (
+          <li key={i} className="rounded-lg border border-border bg-surface p-4">
+            <Skeleton className="h-5 w-2/3" />
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <Skeleton className="h-8" />
+              <Skeleton className="h-8" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
+  } else if (rows.length === 0) {
+    body = <EmptyState compact icon={empty.icon ?? "inbox"} title={empty.title} description={empty.description} action={empty.action} />;
+  } else {
+    body = (
+      <ul className="space-y-3" aria-label={label}>
+        {rows.map((row) => {
+          const cells = new Map(row.getVisibleCells().map((c) => [c.column.id, c]));
+          const select = cells.get("__select");
+          const actions = cells.get("__actions");
+          const title = titleColumn && cells.get(titleColumn.id);
+          return (
+            <li
+              key={row.id}
+              data-state={row.getIsSelected() ? "selected" : undefined}
+              className="rounded-lg border border-border bg-surface p-4 shadow-sm data-[state=selected]:border-accent data-[state=selected]:bg-accent-subtle/40"
+            >
+              <div className="flex items-start gap-3">
+                {select && (
+                  <div className="pt-0.5">
+                    <FlexRender cell={select} />
+                  </div>
+                )}
+                <div className="min-w-0 flex-1 text-sm text-text">
+                  {title &&
+                    (onRowClick ? (
+                      <button type="button" onClick={() => onRowClick(row.original)} className="block w-full min-w-0 rounded-sm text-left focus-ring">
+                        <FlexRender cell={title} />
+                      </button>
+                    ) : (
+                      <FlexRender cell={title} />
+                    ))}
+                </div>
+                {actions && (
+                  <div className="-mr-2 -mt-2 shrink-0">
+                    <FlexRender cell={actions} />
+                  </div>
+                )}
+              </div>
+              {detailColumns.length > 0 && (
+                <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-border pt-3 text-sm">
+                  {detailColumns.map((column) => {
+                    const cell = cells.get(column.id);
+                    return (
+                      <div key={column.id} className="min-w-0">
+                        <dt className="text-xs font-medium text-text-muted">{columnLabel(column)}</dt>
+                        <dd className="mt-0.5 min-w-0 text-text numeric [overflow-wrap:anywhere]">{cell && <FlexRender cell={cell} />}</dd>
+                      </div>
+                    );
+                  })}
+                </dl>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      {(selectable || sortControl) && !error && (
+        <div className="flex items-center gap-3">
+          {selectable && rows.length > 0 && (
+            <label className="flex shrink-0 items-center gap-2 text-sm text-text-muted">
+              <Checkbox
+                aria-label="Select all rows on this page"
+                checked={table.getIsAllPageRowsSelected() ? true : table.getIsSomePageRowsSelected() ? "indeterminate" : false}
+                onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
+              />
+              All
+            </label>
+          )}
+          {sortControl}
+        </div>
+      )}
+      {body}
     </div>
   );
 }

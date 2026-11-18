@@ -30,17 +30,17 @@ export function TicketCard({
 }) {
   return (
     <Card className={cn("relative flex overflow-hidden", className)}>
-      <div className="flex w-32 shrink-0 flex-col items-center justify-center gap-1 bg-accent-subtle px-3 py-5 text-center">
-        <span className="font-display text-2xl font-bold leading-tight text-accent-text">{value}</span>
+      <div className="flex w-24 shrink-0 flex-col items-center justify-center gap-1 bg-accent-subtle px-2 py-5 text-center sm:w-32 sm:px-3">
+        <span className="font-display text-xl font-bold leading-tight text-accent-text sm:text-2xl">{value}</span>
       </div>
       <div aria-hidden className="relative w-0 border-l-2 border-dashed border-border">
         <span className="absolute -top-2 -left-2 size-4 rounded-pill bg-bg" />
         <span className="absolute -bottom-2 -left-2 size-4 rounded-pill bg-bg" />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
-        <div className="flex items-start justify-between gap-2">
-          <p className="truncate font-semibold text-text">{title}</p>
-          {status && <StatusPill status={status} size="sm" />}
+        <div className="flex flex-wrap items-start justify-between gap-x-2 gap-y-1">
+          <p className="min-w-0 font-semibold text-text">{title}</p>
+          {status && <StatusPill status={status} size="sm" className="shrink-0" />}
         </div>
         {meta && <div className="text-sm text-text-muted">{meta}</div>}
         <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-1">
@@ -104,7 +104,7 @@ export function MediaCard({
         >
           {title}
         </Title>
-        {subtitle && <p className="truncate text-sm text-text-muted">{subtitle}</p>}
+        {subtitle && <p className="line-clamp-2 text-sm text-text-muted">{subtitle}</p>}
         {(meta || action) && (
           <div className="mt-auto flex items-center justify-between gap-2 pt-2">
             <div className="text-xs text-text-muted">{meta}</div>

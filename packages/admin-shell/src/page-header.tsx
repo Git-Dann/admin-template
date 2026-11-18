@@ -52,9 +52,11 @@ export function PageHeader({
     }
   }, [setMeta, title, subtitle]);
 
-  if (!back && !actions && !children) return null;
+  if (!back && !actions && !children && !subtitle) return null;
   return (
-    <div className={cn("mb-6 flex flex-col gap-4", className)}>
+    <div className={cn("mb-6 flex flex-col gap-4", !back && !actions && !children && "mb-4 sm:hidden", className)}>
+      {/* On phones the top bar shows only the title, so the subtitle sits here. */}
+      {subtitle && <p className="-mt-1 text-sm text-text-muted sm:hidden">{subtitle}</p>}
       {back && (
         <Link href={back.href} className="inline-flex w-fit items-center gap-1 rounded-sm text-sm text-text-muted hover:text-text focus-ring">
           <Icon name="chevron-left" size="sm" />
@@ -63,8 +65,8 @@ export function PageHeader({
       )}
       {(actions || children) && (
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">{children}</div>
-          {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+          {children && <div className="flex w-full min-w-0 flex-1 flex-wrap items-center gap-2 sm:w-auto">{children}</div>}
+          {actions && <div className="flex w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto max-sm:[&>*]:flex-1">{actions}</div>}
         </div>
       )}
     </div>

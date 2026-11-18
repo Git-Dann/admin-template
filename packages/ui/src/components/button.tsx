@@ -18,9 +18,10 @@ export const buttonVariants = cva(
       },
       size: {
         md: "h-control px-4 text-sm rounded-md",
-        sm: "h-control-sm px-3 text-sm rounded-sm",
+        // Compact sizes grow to the 44px tap size on touch screens.
+        sm: "h-control-sm px-3 text-sm rounded-sm touch:h-control touch:px-4",
         icon: "size-control rounded-md",
-        "icon-sm": "size-control-sm rounded-sm",
+        "icon-sm": "size-control-sm rounded-sm touch:size-control",
       },
       block: { true: "w-full" },
     },

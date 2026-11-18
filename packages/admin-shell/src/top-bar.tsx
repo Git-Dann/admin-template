@@ -3,9 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Dialog } from "radix-ui";
 import {
   Avatar,
   Button,
+  Input,
   cn,
   DropdownMenu,
   DropdownMenuContent,
@@ -217,19 +219,77 @@ function AccountMenu() {
 }
 
 /** Top bar. Every control shares one height (h-control, 44px). */
+/** Phones: a search button that opens page search full width. */
+function MobileSearch() {
+  const config = useAdminConfig();
+  const { user } = useSession();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const items = useMemo(
+    () => resolveNav(config).flatMap((g) => g.items.filter((i) => !i.permission || can(user, i.permission)).map((i) => ({ ...i, group: g.label }))),
+    [config, user],
+  );
+  const results = q ? items.filter((i) => i.label.toLowerCase().includes(q.toLowerCase())) : items;
+  return (
+    <Dialog.Root open={open} onOpenChange={(o) => { setOpen(o); if (!o) setQ(""); }}>
+      <Dialog.Trigger asChild>
+        <button type="button" aria-label="Search pages" className="flex size-control shrink-0 items-center justify-center rounded-md border border-border bg-surface text-text-muted hover:text-text focus-ring md:hidden">
+          <Icon name="search" />
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-overlay" />
+        <Dialog.Content className="fixed inset-x-0 top-0 z-50 max-h-dvh overflow-y-auto border-b border-border bg-bg-elevated p-4 shadow-lg focus:outline-none">
+          <Dialog.Title className="sr-only">Search pages</Dialog.Title>
+          <Dialog.Description className="sr-only">Type to filter pages, then tap one to open it.</Dialog.Description>
+          <div className="flex items-center gap-2">
+            <Input type="search" icon="search" placeholder="Search…" aria-label="Search pages" value={q} onChange={(e) => setQ(e.target.value)} />
+            <Dialog.Close asChild>
+              <Button variant="ghost" size="icon" icon="close" aria-label="Close search" />
+            </Dialog.Close>
+          </div>
+          <ul className="mt-3 space-y-1" aria-label="Pages">
+            {results.map((r) => (
+              <li key={r.href}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    setQ("");
+                    router.push(r.href);
+                  }}
+                  className="flex h-control w-full items-center gap-3 rounded-md px-3 text-left text-sm text-text hover:bg-surface-raised focus-ring"
+                >
+                  {renderIcon(r.icon, { size: "sm", className: "text-text-muted" })}
+                  <span className="flex-1">{r.label}</span>
+                  {r.group && <span className="text-xs text-text-muted">{r.group}</span>}
+                </button>
+              </li>
+            ))}
+            {results.length === 0 && <li className="px-3 py-6 text-center text-sm text-text-muted">No pages match “{q}”.</li>}
+          </ul>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+}
+
 export function TopBar({ onMenu }: { onMenu?: () => void }) {
   const { title, subtitle } = usePageMeta();
   return (
-    <header className="sticky top-0 z-30 flex h-topbar shrink-0 items-center gap-3 border-b border-border bg-bg/90 px-4 backdrop-blur lg:px-8">
+    <header className="sticky top-0 z-30 flex h-topbar shrink-0 items-center gap-2 border-b border-border bg-bg/90 px-4 backdrop-blur sm:gap-3 lg:px-8">
       {onMenu && (
         <button type="button" onClick={onMenu} aria-label="Open menu" className="flex size-control shrink-0 items-center justify-center rounded-md text-text hover:bg-surface-raised focus-ring lg:hidden">
           <Icon name="menu" />
         </button>
       )}
       <div className="min-w-0 flex-1">
-        <h1 className="truncate text-lg font-semibold leading-tight text-text lg:text-xl">{title}</h1>
-        {subtitle && <p className="truncate text-sm text-text-muted">{subtitle}</p>}
+        {/* Phones: up to two lines for the title; the subtitle moves into the page header. */}
+        <h1 className="line-clamp-2 text-base font-semibold leading-tight text-text sm:truncate sm:text-lg lg:text-xl">{title}</h1>
+        {subtitle && <p className="hidden truncate text-sm text-text-muted sm:block">{subtitle}</p>}
       </div>
+      <MobileSearch />
       <GlobalSearch />
       <Notifications />
       <AccountMenu />

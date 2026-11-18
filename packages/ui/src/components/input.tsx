@@ -11,7 +11,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ className, icon, size = "md", ...props }, ref) {
-  const input = <input ref={ref} className={cn(field, size === "md" ? "h-control" : "h-control-sm", icon && "pl-10", className)} {...props} />;
+  const input = <input ref={ref} className={cn(field, size === "md" ? "h-control" : "h-control-sm touch:h-control", icon && "pl-10", className)} {...props} />;
   if (!icon) return input;
   return (
     <div className="relative w-full">

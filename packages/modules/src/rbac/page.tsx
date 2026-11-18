@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { RoleDefinition } from "@gitwork/data";
 import { PageHeader, scopeOf, setScope, useAdapter, useAdminConfig, useCan, type PermissionDefinition, type ScopeLevel, useModuleTitle } from "@gitwork/admin-shell";
-import { Button, Callout, Card, cn, DataState, RoleBadge, Skeleton, toast } from "@gitwork/ui";
+import { Button, Callout, Card, cn, DataState, RoleBadge, Select, Skeleton, toast, useIsMobile } from "@gitwork/ui";
 
 const LEVELS: Array<{ value: ScopeLevel; label: string }> = [
   { value: "none", label: "None" },
@@ -12,9 +12,9 @@ const LEVELS: Array<{ value: ScopeLevel; label: string }> = [
   { value: "all", label: "All" },
 ];
 
-function LevelSwitch({ value, onChange, ownable, disabled, label }: { value: ScopeLevel; onChange: (v: ScopeLevel) => void; ownable?: boolean; disabled?: boolean; label: string }) {
+function LevelSwitch({ value, onChange, ownable, disabled, label, block }: { value: ScopeLevel; onChange: (v: ScopeLevel) => void; ownable?: boolean; disabled?: boolean; label: string; block?: boolean }) {
   return (
-    <div role="radiogroup" aria-label={label} className="inline-flex h-control-sm rounded-md border border-border bg-surface p-0.5">
+    <div role="radiogroup" aria-label={label} className={cn("inline-flex rounded-md border border-border bg-surface p-0.5", block ? "flex h-control w-full [&>*]:flex-1" : "h-control-sm")}>
       {LEVELS.filter((l) => ownable || l.value !== "own").map((l) => (
         <button
           key={l.value}
@@ -24,7 +24,7 @@ function LevelSwitch({ value, onChange, ownable, disabled, label }: { value: Sco
           disabled={disabled}
           onClick={() => onChange(l.value)}
           className={cn(
-            "rounded-sm px-2.5 text-xs font-medium focus-ring disabled:cursor-not-allowed",
+            "hit-area rounded-sm px-2.5 text-xs font-medium focus-ring disabled:cursor-not-allowed",
             value === l.value ? (l.value === "none" ? "bg-surface-raised text-text" : "bg-accent text-text-on-accent") : "text-text-muted hover:text-text",
           )}
         >
@@ -56,6 +56,8 @@ export function RolesPage() {
 
   const permissions: Array<PermissionDefinition & { module: string }> = config.modules.flatMap((m) => (m.permissions ?? []).map((p) => ({ ...p, module: m.title })));
   const groups = [...new Set(permissions.map((p) => p.module))];
+  const isMobile = useIsMobile();
+  const [mobileRole, setMobileRole] = useState<string | undefined>(undefined);
   const dirty = Object.values(draft);
 
   return (
@@ -80,6 +82,47 @@ export function RolesPage() {
       <DataState query={q} loading={<Skeleton className="h-96 w-full" />}>
         {(stored) => {
           const roles = stored.map((r) => draft[r.id] ?? r);
+          if (isMobile) {
+            // Phones: one role at a time instead of a matrix that scrolls sideways.
+            const role = roles.find((r) => r.id === mobileRole) ?? roles[0]!;
+            const locked = !canManage || role.permissions.includes("*");
+            return (
+              <div className="space-y-4">
+                <Select
+                  aria-label="Role"
+                  value={role.id}
+                  onValueChange={setMobileRole}
+                  options={roles.map((r) => ({ value: r.id, label: r.label }))}
+                />
+                {role.permissions.includes("*") && <p className="text-sm text-text-muted">{role.label} has every permission.</p>}
+                {groups.map((group) => (
+                  <Card key={group} className="overflow-hidden">
+                    <h3 className="border-b border-border bg-surface-raised px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{group}</h3>
+                    <ul className="divide-y divide-border">
+                      {permissions
+                        .filter((p) => p.module === group)
+                        .map((p) => (
+                          <li key={p.id} className="space-y-2 px-4 py-3">
+                            <div>
+                              <p className="text-sm font-medium text-text">{p.label}</p>
+                              <code className="text-xs text-text-muted">{p.id}</code>
+                            </div>
+                            <LevelSwitch
+                              block
+                              label={`${p.label} for ${role.label}`}
+                              value={scopeOf({ id: "", permissions: role.permissions }, p.id)}
+                              ownable={p.ownable}
+                              disabled={locked}
+                              onChange={(level) => setDraft((d) => ({ ...d, [role.id]: setScope(d[role.id] ?? role, p.id, level) }))}
+                            />
+                          </li>
+                        ))}
+                    </ul>
+                  </Card>
+                ))}
+              </div>
+            );
+          }
           return (
             <Card className="overflow-x-auto">
               <table className="w-full min-w-[640px] border-collapse text-sm" aria-label="Permission matrix">

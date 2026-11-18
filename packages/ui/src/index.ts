@@ -1,5 +1,6 @@
 export * from "./lib/cn";
 export * from "./lib/format";
+export * from "./lib/use-media";
 export * from "./icons";
 export * from "./components/button";
 export * from "./components/input";

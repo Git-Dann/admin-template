@@ -6,6 +6,8 @@ import { Icon, renderIcon, type IconLike } from "../icons";
 import { Input } from "./input";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./overlays";
 import { CountBadge } from "./badges";
+import { Select } from "./controls";
+import { useIsMobile } from "../lib/use-media";
 
 /**
  * Toolbar row. Every control inside shares one height (h-control) so chips, pills,
@@ -41,8 +43,27 @@ export function FilterChips<V extends string>({
   label?: string;
   className?: string;
 }) {
+  const isMobile = useIsMobile();
+  const text = (o: ChipOption<V>) => (typeof o.label === "string" ? o.label : String(o.value));
+  // On phones, long chip sets become one full-width select instead of wrapping onto several rows.
+  const tooLong = options.length > 3 || options.reduce((n, o) => n + text(o).length + (o.count !== undefined ? 4 : 0), 0) > 24;
+  if (isMobile && tooLong) {
+    return (
+      <Select
+        aria-label={label}
+        className={cn("w-full", className)}
+        value={value}
+        onValueChange={(v) => onChange(v as V)}
+        options={options.map((o) => ({
+          value: o.value,
+          icon: o.icon,
+          label: o.count !== undefined ? `${text(o)} (${o.count.toLocaleString("en-GB")})` : text(o),
+        }))}
+      />
+    );
+  }
   return (
-    <div role="radiogroup" aria-label={label} className={cn("flex flex-wrap items-center gap-2", className)}>
+    <div role="radiogroup" aria-label={label} className={cn("flex flex-wrap items-center gap-2", isMobile && "w-full flex-nowrap [&>*]:flex-1 [&>*]:px-2", className)}>
       {options.map((o) => {
         const active = o.value === value;
         return (
@@ -92,14 +113,14 @@ export function FilterPill<V extends string>({
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "inline-flex h-control items-center gap-2 rounded-pill border px-4 text-sm focus-ring",
+          "inline-flex h-control max-w-full items-center gap-2 rounded-pill border px-4 text-sm focus-ring",
           selected.length ? "border-accent bg-accent-subtle text-accent-text" : "border-border bg-surface text-text hover:border-border-strong",
         )}
       >
         {renderIcon(icon, { size: "sm" })}
         <span className="font-medium">{label}</span>
-        {summary !== null ? <span className={selected.length ? undefined : "text-text-muted"}>{summary}</span> : <CountBadge value={selected.length} />}
-        <Icon name="chevron-down" size="sm" className="opacity-70" />
+        {summary !== null ? <span className={cn("min-w-0 truncate", !selected.length && "text-text-muted")}>{summary}</span> : <CountBadge value={selected.length} />}
+        <Icon name="chevron-down" size="sm" className="shrink-0 opacity-70" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>

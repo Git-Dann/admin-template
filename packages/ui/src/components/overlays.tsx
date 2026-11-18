@@ -36,7 +36,7 @@ export function DialogContent({
       <D.Content
         className={cn(
           panel,
-          "fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 focus:outline-none",
+          "fixed left-1/2 top-1/2 z-50 max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto overscroll-contain rounded-xl p-5 focus:outline-none sm:p-6",
           { sm: "max-w-sm", md: "max-w-lg", lg: "max-w-3xl" }[size],
           className,
         )}
@@ -51,7 +51,7 @@ export function DialogContent({
           </D.Close>
         </div>
         {children && <div className="mt-5">{children}</div>}
-        {footer && <div className="mt-6 flex justify-end gap-2">{footer}</div>}
+        {footer && <div className="mt-6 flex flex-wrap justify-end gap-2 max-sm:[&>*]:flex-1">{footer}</div>}
       </D.Content>
     </D.Portal>
   );
@@ -168,7 +168,8 @@ export function DropdownMenuContent({ className, align = "end", ...props }: Comp
       <DM.Content
         align={align}
         sideOffset={6}
-        className={cn(panel, "z-50 min-w-48 rounded-md p-1", className)}
+        collisionPadding={8}
+        className={cn(panel, "z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-48 max-w-[calc(100vw-1rem)] overflow-y-auto rounded-md p-1", className)}
         {...props}
       />
     </DM.Portal>
@@ -185,7 +186,7 @@ export function DropdownMenuItem({
   return (
     <DM.Item
       className={cn(
-        "flex h-control-sm cursor-pointer select-none items-center gap-2 rounded-sm px-2.5 text-sm outline-none data-[highlighted]:bg-surface-raised data-[disabled]:opacity-50",
+        "flex h-control-sm cursor-pointer select-none items-center gap-2 rounded-sm px-2.5 text-sm outline-none touch:h-control data-[highlighted]:bg-surface-raised data-[disabled]:opacity-50",
         tone === "danger" ? "text-danger" : "text-text",
         className,
       )}
@@ -200,7 +201,7 @@ export function DropdownMenuItem({
 export function DropdownMenuCheckboxItem({ className, children, ...props }: ComponentPropsWithoutRef<typeof DM.CheckboxItem>) {
   return (
     <DM.CheckboxItem
-      className={cn("flex h-control-sm cursor-pointer select-none items-center gap-2 rounded-sm px-2.5 text-sm outline-none data-[highlighted]:bg-surface-raised", className)}
+      className={cn("flex h-control-sm cursor-pointer select-none items-center gap-2 rounded-sm px-2.5 text-sm outline-none touch:h-control data-[highlighted]:bg-surface-raised", className)}
       {...props}
     >
       <span className="flex size-4 items-center justify-center rounded-sm border border-border-strong data-[state=checked]:bg-accent">
@@ -230,7 +231,13 @@ export const PopoverClose = P.Close;
 export function PopoverContent({ className, align = "start", ...props }: ComponentPropsWithoutRef<typeof P.Content>) {
   return (
     <P.Portal>
-      <P.Content align={align} sideOffset={6} className={cn(panel, "z-50 rounded-md p-3 focus:outline-none", className)} {...props} />
+      <P.Content
+        align={align}
+        sideOffset={6}
+        collisionPadding={8}
+        className={cn(panel, "z-50 max-w-[calc(100vw-1rem)] rounded-md p-3 focus:outline-none", className)}
+        {...props}
+      />
     </P.Portal>
   );
 }
