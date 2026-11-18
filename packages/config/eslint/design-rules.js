@@ -47,9 +47,33 @@ function makeRule(meta, check) {
   };
 }
 
+const THEME_VAR = /var\(--(?:color|font|radius|shadow|spacing)-/;
+
+/** Tailwind's `@theme inline` variables don't exist at runtime. Use tokenVar() → var(--gw-…). */
+const noThemeVars = {
+  meta: {
+    type: "problem",
+    schema: [],
+    docs: { description: "Use tokenVar() / --gw-* variables in inline styles and SVG attributes" },
+    messages: {
+      themeVar:
+        "Tailwind theme variables (var(--color-…)) aren't emitted at runtime. Use tokenVar(\"accent\") from @gitwork/ui, which gives var(--gw-color-accent).",
+    },
+  },
+  create(context) {
+    const visit = (node) => {
+      for (const value of stringsOf(node)) {
+        if (THEME_VAR.test(value)) context.report({ node, messageId: "themeVar" });
+      }
+    };
+    return { Literal: visit, TemplateLiteral: visit };
+  },
+};
+
 export const designRules = {
   meta: { name: "gitwork-design" },
   rules: {
+    "no-theme-vars": noThemeVars,
     "no-raw-colours": makeRule(
       {
         docs: { description: "Use semantic colour tokens (bg-surface, text-muted...) not raw colours" },

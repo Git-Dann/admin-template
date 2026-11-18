@@ -1,0 +1,9 @@
+{
+  "Semantic": {
+    "Colour": {
+      "Accent": { "$type": "color", "$value": { "colorSpace": "srgb", "components": [0.24, 0.71, 0.52], "alpha": 1, "hex": "#3DB585" } },
+      "Surface Raised": { "$type": "color", "$value": { "colorSpace": "srgb", "components": [0.09, 0.14, 0.12], "alpha": 1, "hex": "#17241E" } }
+    }
+  },
+  "$extensions": { "com.figma.modeName": "Dark" }
+}

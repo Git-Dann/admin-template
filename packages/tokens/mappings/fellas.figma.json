@@ -1,0 +1,15 @@
+{
+  "$comment": "Figma variable name → semantic token. Names whose last segment already matches a token (e.g. 'Colour/Surface Raised') map automatically and don't need listing.",
+  "modes": { "Dark": "dark", "Default": "dark" },
+  "collections": ["Semantic"],
+  "tokens": {
+    "Brand/Red": "color.accent",
+    "Brand/Red Pressed": "color.accent-pressed",
+    "Brand/Gold": "color.secondary",
+    "Background/Page": "color.bg",
+    "Background/Card": "color.surface",
+    "Background/Card Raised": "color.surface-raised",
+    "Stroke/Default": "color.border"
+  },
+  "ignore": []
+}

@@ -1,0 +1,91 @@
+/*
+ * @gitwork/ui stylesheet. Apps import this once:
+ *   @import "@gitwork/ui/styles.css";
+ * It brings Tailwind, the token theme (default palette removed) and every client theme.
+ */
+@import "tailwindcss";
+@import "@gitwork/tokens/tailwind.css";
+@import "@gitwork/tokens/themes.css";
+
+/* Scan shared packages for classes. */
+@source "./";
+@source "../../admin-shell/src";
+@source "../../modules/src";
+
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
+/* Touch screens (phones, tablets): controls grow to a 44px tap size. */
+@custom-variant touch (@media (pointer: coarse));
+
+@layer base {
+  html {
+    background: var(--gw-color-bg);
+    color: var(--gw-color-text);
+    font-family: var(--gw-font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    min-height: 100dvh;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--gw-font-display);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--gw-color-focus-ring);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--gw-color-accent-subtle);
+    color: var(--gw-color-text);
+  }
+  * {
+    border-color: var(--gw-color-border);
+  }
+  /* A wide child (table, chart) must never stretch a grid, and so the page, past the screen. */
+  :where(.grid) > * {
+    min-width: 0;
+  }
+  /* Long words and URLs wrap instead of pushing layouts sideways. */
+  body {
+    overflow-wrap: break-word;
+  }
+}
+
+/* Numbers line up in tables and stat cards. */
+@utility numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Shared focus ring for custom controls (Radix triggers, cards acting as buttons). */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--gw-color-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * Enlarges the tap area of small controls (checkboxes, switches, inline icon buttons)
+ * to at least 44px without changing their look or the layout around them.
+ */
+@utility hit-area {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

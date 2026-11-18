@@ -1,0 +1,9 @@
+{
+  "$comment": "Figma variable name → semantic token. Names whose last segment already matches a token map automatically.",
+  "modes": { "Light": "light", "Dark": "dark" },
+  "tokens": {
+    "Green/Primary": "color.accent",
+    "Green/Primary Pressed": "color.accent-pressed"
+  },
+  "ignore": []
+}

@@ -1,0 +1,57 @@
+{
+  "status": 200,
+  "error": false,
+  "meta": {
+    "variableCollections": {
+      "VariableCollectionId:1": {
+        "id": "VariableCollectionId:1",
+        "name": "Primitives",
+        "defaultModeId": "1:0",
+        "modes": [{ "modeId": "1:0", "name": "Value" }]
+      },
+      "VariableCollectionId:2": {
+        "id": "VariableCollectionId:2",
+        "name": "Semantic",
+        "defaultModeId": "2:0",
+        "modes": [{ "modeId": "2:0", "name": "Dark" }]
+      }
+    },
+    "variables": {
+      "VariableID:1": {
+        "id": "VariableID:1",
+        "name": "Red/500",
+        "variableCollectionId": "VariableCollectionId:1",
+        "resolvedType": "COLOR",
+        "valuesByMode": { "1:0": { "r": 0.8, "g": 0.05, "b": 0.05, "a": 1 } }
+      },
+      "VariableID:2": {
+        "id": "VariableID:2",
+        "name": "Brand/Red",
+        "variableCollectionId": "VariableCollectionId:2",
+        "resolvedType": "COLOR",
+        "valuesByMode": { "2:0": { "type": "VARIABLE_ALIAS", "id": "VariableID:1" } }
+      },
+      "VariableID:3": {
+        "id": "VariableID:3",
+        "name": "Text/Muted",
+        "variableCollectionId": "VariableCollectionId:2",
+        "resolvedType": "COLOR",
+        "valuesByMode": { "2:0": { "r": 0.7, "g": 0.66, "b": 0.66, "a": 1 } }
+      },
+      "VariableID:4": {
+        "id": "VariableID:4",
+        "name": "Radius/md",
+        "variableCollectionId": "VariableCollectionId:2",
+        "resolvedType": "FLOAT",
+        "valuesByMode": { "2:0": 12 }
+      },
+      "VariableID:5": {
+        "id": "VariableID:5",
+        "name": "Something/Unknown",
+        "variableCollectionId": "VariableCollectionId:2",
+        "resolvedType": "COLOR",
+        "valuesByMode": { "2:0": { "r": 0, "g": 0, "b": 0, "a": 0.5 } }
+      }
+    }
+  }
+}

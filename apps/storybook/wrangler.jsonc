@@ -1,0 +1,7 @@
+// Static Storybook on Cloudflare Workers: pnpm preview:deploy
+{
+  "name": "gitwork-storybook",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "assets": { "directory": "./storybook-static" }
+}
