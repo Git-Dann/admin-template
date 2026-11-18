@@ -561,14 +561,15 @@ function MobileCards<T extends RowData>({
       {(selectable || sortControl) && !error && (
         <div className="flex items-center gap-3">
           {selectable && rows.length > 0 && (
-            <label className="flex shrink-0 items-center gap-2 text-sm text-text-muted">
+            <div className="flex shrink-0 items-center gap-2 text-sm text-text-muted">
               <Checkbox
+                id="select-all-cards"
                 aria-label="Select all rows on this page"
                 checked={table.getIsAllPageRowsSelected() ? true : table.getIsSomePageRowsSelected() ? "indeterminate" : false}
                 onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
               />
-              All
-            </label>
+              <span aria-hidden>All</span>
+            </div>
           )}
           {sortControl}
         </div>
