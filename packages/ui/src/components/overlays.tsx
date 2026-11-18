@@ -47,7 +47,7 @@ export function DialogContent({
             {description ? <D.Description className="mt-1 text-sm text-text-muted">{description}</D.Description> : <D.Description className="sr-only">{title}</D.Description>}
           </div>
           <D.Close asChild>
-            <Button variant="ghost" size="icon-sm" icon="close" aria-label="Close" />
+            <Button variant="ghost" size="icon-sm" icon="close" aria-label="Close" className="shrink-0" />
           </D.Close>
         </div>
         {children && <div className="mt-5">{children}</div>}
@@ -99,7 +99,7 @@ export function Drawer({
               {description ? <D.Description className="mt-0.5 text-sm text-text-muted">{description}</D.Description> : <D.Description className="sr-only">{title}</D.Description>}
             </div>
             <D.Close asChild>
-              <Button variant="ghost" size="icon-sm" icon="close" aria-label="Close" />
+              <Button variant="ghost" size="icon-sm" icon="close" aria-label="Close" className="shrink-0" />
             </D.Close>
           </div>
           <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>

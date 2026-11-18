@@ -246,7 +246,7 @@ function MobileSearch() {
           <div className="flex items-center gap-2">
             <Input type="search" icon="search" placeholder="Search…" aria-label="Search pages" value={q} onChange={(e) => setQ(e.target.value)} />
             <Dialog.Close asChild>
-              <Button variant="ghost" size="icon" icon="close" aria-label="Close search" />
+              <Button variant="ghost" size="icon" icon="close" aria-label="Close search" className="shrink-0" />
             </Dialog.Close>
           </div>
           <ul className="mt-3 space-y-1" aria-label="Pages">

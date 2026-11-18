@@ -93,7 +93,7 @@ export function LoginScreen() {
                 <button
                   key={r.id}
                   type="button"
-                  className="rounded-pill focus-ring"
+                  className="hit-area rounded-pill focus-ring"
                   onClick={async () => {
                     await signIn(`${r.id}@example.com`);
                     await switchRole(r.id);
