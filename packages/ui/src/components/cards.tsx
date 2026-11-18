@@ -85,7 +85,7 @@ export function MediaCard({
   const ratio = { video: "aspect-video", square: "aspect-square", poster: "aspect-[2/3]" }[aspect];
   const Title = onClick ? "button" : "p";
   return (
-    <Card className={cn("group flex flex-col overflow-hidden", onClick && "transition-shadow hover:shadow-md", className)}>
+    <Card className={cn("group relative flex flex-col overflow-hidden", onClick && "transition-shadow hover:shadow-md", className)}>
       <div className={cn("relative overflow-hidden bg-surface-raised", ratio)}>
         {image ? (
           <img src={image} alt={imageAlt} className="size-full object-cover transition-transform group-hover:scale-[1.02]" loading="lazy" />
@@ -100,7 +100,7 @@ export function MediaCard({
       <div className="flex flex-1 flex-col gap-1 p-4">
         <Title
           {...(onClick ? { type: "button" as const, onClick } : {})}
-          className={cn("truncate text-left font-semibold text-text", onClick && "focus-ring rounded-sm after:absolute after:inset-0 relative")}
+          className={cn("line-clamp-2 text-left font-semibold text-text", onClick && "focus-ring rounded-sm after:absolute after:inset-0")}
         >
           {title}
         </Title>

@@ -58,7 +58,7 @@ export function PageHeader({
       {/* On phones the top bar shows only the title, so the subtitle sits here. */}
       {subtitle && <p className="-mt-1 text-sm text-text-muted sm:hidden">{subtitle}</p>}
       {back && (
-        <Link href={back.href} className="inline-flex w-fit items-center gap-1 rounded-sm text-sm text-text-muted hover:text-text focus-ring">
+        <Link href={back.href} className="hit-area inline-flex w-fit items-center gap-1 rounded-sm text-sm text-text-muted hover:text-text focus-ring">
           <Icon name="chevron-left" size="sm" />
           {back.label}
         </Link>

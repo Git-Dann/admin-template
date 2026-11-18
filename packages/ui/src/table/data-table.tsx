@@ -523,7 +523,7 @@ function MobileCards<T extends RowData>({
                 <div className="min-w-0 flex-1 text-sm text-text">
                   {title &&
                     (onRowClick ? (
-                      <button type="button" onClick={() => onRowClick(row.original)} className="block w-full min-w-0 rounded-sm text-left focus-ring">
+                      <button type="button" onClick={() => onRowClick(row.original)} className="flex min-h-11 w-full min-w-0 items-center rounded-sm text-left focus-ring">
                         <FlexRender cell={title} />
                       </button>
                     ) : (
